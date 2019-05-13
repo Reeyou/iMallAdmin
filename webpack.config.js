@@ -27,7 +27,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /(\.js|\.jsx)$/,
+        test: /(\.js|\jsx)$/,
         loader: 'happypack/loader?id=js',
         exclude: /node_modules/
       },

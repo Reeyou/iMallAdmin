@@ -1,6 +1,13 @@
 {
   "presets": [
-    "react",
-    "env",
+    "@babel/preset-react",
+    "@babel/preset-env",
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    // mobx装饰器@ 解析
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    // 类方法解析
+    ["@babel/plugin-proposal-class-properties", {"loose": true}]
   ]
 }

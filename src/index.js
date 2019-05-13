@@ -1,9 +1,12 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import Index from './container/Index'
+import { Provider } from 'mobx-react'
+import stores from './store'
 
 ReactDom.render(
-  // <Index />,
-  <h1>19922222244882 world</h1>,
+  <Provider {...stores}>
+    <Index />
+  </Provider>,
   document.getElementById('root')
 )
