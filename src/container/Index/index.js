@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import {observer, inject} from 'mobx-react'
 import BgCanvas from './bgCanvas'
+import Footer from '@/components/Index/footer'
 import './index.less'
 
 @inject('Global')
@@ -16,8 +17,8 @@ class Index extends Component {
   render() {
     return (
       <div className='wrapper'>
+        <BgCanvas />
         <div className="container">
-          <BgCanvas />
           <div className="title">
             <h1>iMall后台管理系统</h1>
             <h3>欢迎登录</h3>
@@ -34,6 +35,7 @@ class Index extends Component {
           <p className='error_msg'></p>
           <button type='button'>登录</button>
         </div>
+        <Footer />
       </div>
     )
   }

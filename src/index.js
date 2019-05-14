@@ -1,14 +1,14 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import Index from './container/Index'
 import { Provider } from 'mobx-react'
 import stores from './store'
 import '@/assets/css/reset.css'
 import '@/assets/iconfont/iconfont.css'
+import App from './routers'
 
 ReactDom.render(
   <Provider {...stores}>
-    <Index />
+    <App />
   </Provider>,
   document.getElementById('root')
 )

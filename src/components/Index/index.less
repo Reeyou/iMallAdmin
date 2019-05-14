@@ -1,4 +1,23 @@
+@import '../../assets/css/common.less';
 .header {
   width: 100%;
   height: 80px;
+}
+.footer {
+  position: absolute;
+  bottom: 80px;
+  p {
+    color: @AshColor;
+    font-size: 14px;
+    text-align: center;
+    span {
+      a {
+        color: @iBlue;
+        padding: 0 4px;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }

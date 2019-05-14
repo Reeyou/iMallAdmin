@@ -5,12 +5,12 @@ import './index.less'
   constructor(props) {
     super(props)
   }
-  componentWillMount() {
+  componentDidMount() {
     this.bgAnimation()
   }
   bgAnimation() {
     	//定义画布宽高和生成点的个数
-    var WIDTH = window.innerWidth, HEIGHT = window.innerHeight, POINT = 20;
+    var WIDTH = window.innerWidth, HEIGHT = window.innerHeight, POINT = 27;
     
     var canvas = document.getElementById('Mycanvas');
     canvas.width = WIDTH,
@@ -113,7 +113,7 @@ import './index.less'
   }
   render() {
     return (
-      <div style={{background: '#f7fafc', textAlign: 'center', overflow: 'hidden'}}>
+      <div style={{width: '100%',height: '100vh',background: '#f7fafc', textAlign: 'center',fontSize: 0, overflow: 'hidden'}}>
         <canvas id='Mycanvas'></canvas>
       </div>
     )

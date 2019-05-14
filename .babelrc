@@ -9,6 +9,8 @@
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     // 类方法解析
     ["@babel/plugin-proposal-class-properties", {"loose": true}],
+    //异步解析
+    "@babel/plugin-syntax-dynamic-import",
     [
       "import",
       {
