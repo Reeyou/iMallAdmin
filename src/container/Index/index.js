@@ -4,6 +4,8 @@
 **/
 import React, { Component } from 'react'
 import {observer, inject} from 'mobx-react'
+import BgCanvas from './bgCanvas'
+import './index.less'
 
 @inject('Global')
 @observer
@@ -13,8 +15,25 @@ class Index extends Component {
   }
   render() {
     return (
-      <div>
-        <h1>首页</h1>
+      <div className='wrapper'>
+        <div className="container">
+          <BgCanvas />
+          <div className="title">
+            <h1>iMall后台管理系统</h1>
+            <h3>欢迎登录</h3>
+          </div>
+          <div className='input'>
+            <i className='iconfont icon-user' />
+            <input type="text" placeholder="用户名" />
+          </div>
+          <p className='error_msg'></p>
+          <div className='input'>
+            <i className='iconfont icon-password'></i>
+            <input type="password" placeholder="登录密码" />
+          </div>
+          <p className='error_msg'></p>
+          <button type='button'>登录</button>
+        </div>
       </div>
     )
   }

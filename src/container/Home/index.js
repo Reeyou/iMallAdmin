@@ -4,14 +4,17 @@
 **/
 import React, { Components } from 'react'
 
+
 class Home extends Components {
   constructor(props) {
     super(props)
   }
   render() {
-    <div>
-      <h1>首页</h1>
-    <div>
+    return (
+      <div>
+        <h1>11</h1>
+      </div>
+    )
   }
 }
 export default Home;
