@@ -1,10 +1,6 @@
-/**
-  @Author: Reeyou  
-  @Params: 商品管理 
-**/
-/**
-  @Author: Reeyou  
-  @Params: 首页
+/** 
+  @Author: Reeyou
+  @Params: 权限管理 
 **/
 import React, { Component } from 'react'
 import Header from '@/components/Index/header'
@@ -13,7 +9,7 @@ import PageTable from '@/components/PageTable'
 import PageBread from '@/components/PageBread'
 import { Divider, Tag } from 'antd';
 
-class ProductManage extends Component {
+class AuthManage extends Component {
   constructor(props) {
     super(props)
   }
@@ -97,7 +93,7 @@ class ProductManage extends Component {
         <Menu />
         {/* <PageBread />   */}
         <PageTable
-          title='商品列表'
+          title='权限管理'
           data={this.data}
           columns={this.columns}
         />
@@ -105,4 +101,4 @@ class ProductManage extends Component {
     )
   }
 }
-export default ProductManage;
+export default AuthManage;

@@ -1,11 +1,8 @@
 /**
-  @Author: Reeyou  
-  @Params: 商品管理 
+  @Author: Reeyou   
+  @Params: 用户列表
 **/
-/**
-  @Author: Reeyou  
-  @Params: 首页
-**/
+
 import React, { Component } from 'react'
 import Header from '@/components/Index/header'
 import Menu from '@/components/Menu'
@@ -13,7 +10,7 @@ import PageTable from '@/components/PageTable'
 import PageBread from '@/components/PageBread'
 import { Divider, Tag } from 'antd';
 
-class ProductManage extends Component {
+class Account extends Component {
   constructor(props) {
     super(props)
   }
@@ -95,9 +92,8 @@ class ProductManage extends Component {
       <div>
         <Header />
         <Menu />
-        {/* <PageBread />   */}
         <PageTable
-          title='商品列表'
+          title='用户列表'
           data={this.data}
           columns={this.columns}
         />
@@ -105,4 +101,4 @@ class ProductManage extends Component {
     )
   }
 }
-export default ProductManage;
+export default Account;

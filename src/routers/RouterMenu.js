@@ -9,7 +9,19 @@ let menulist = [
     path: '/productManage',
     name: '商品管理',
     key: '02',
-    icon: 'iconfont icon-iconsp1'
+    icon: 'iconfont icon-iconsp1',
+    children: [
+      {
+        path: '/productManage',
+        name: '商品列表',
+        key: '0201',
+      }, 
+      {
+        path: '/categoryManage',
+        name: '品类管理',
+        key: '0202',
+      }
+    ]
   },
   {
     path: '/orderManage',
@@ -30,17 +42,17 @@ let menulist = [
     icon: 'iconfont icon-setting',
     children: [
       {
-        path: '/accountManage',
+        path: '/authManage',
         name: '权限管理',
         key: '0501'
       },
       {
-        path: '/accountManage',
+        path: '/messageManage',
         name: '信息管理',
         key: '0502'
       },
       {
-        path: '/accountManage',
+        path: '/logManage',
         name: '日志管理',
         key: '0503'
       }
