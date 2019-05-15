@@ -2,17 +2,20 @@
   @Author: Reeyou  
   @Params: 首页
 **/
-import React, { Components } from 'react'
+import React, { Component } from 'react'
+import Header from '@/components/Index/header'
+import Menu from '@/components/Menu'
 
-
-class Home extends Components {
+class Home extends Component {
   constructor(props) {
     super(props)
   }
   render() {
     return (
       <div>
-        <h1>11</h1>
+        <Header />
+        <Menu />
+        <h1>首页</h1>
       </div>
     )
   }

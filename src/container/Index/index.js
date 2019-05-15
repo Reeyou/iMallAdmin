@@ -25,7 +25,7 @@ class Index extends Component {
           </div>
           <div className='input'>
             <i className='iconfont icon-user' />
-            <input type="text" placeholder="用户名" />
+            <input type="text" placeholder="用户名"/>
           </div>
           <p className='error_msg'></p>
           <div className='input'>

@@ -1,4 +1,4 @@
-import RouteLoading from '../components/RouteLoading'
+import PageLoading from '../components/PageLoading'
 import Loadable from 'react-loadable'
 
-const Index = Loadable({loader: () => import('../container/Index'), loading: RouteLoading, delay: 400})
+const Index = Loadable({loader: () => import('../container/Index'), loading: PageLoading, delay: 400})

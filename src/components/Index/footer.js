@@ -8,7 +8,7 @@ export default class Footer extends Component {
   render() {
     return (
       <div className='footer'>
-        <p>Copyright © 2019-Present iMall. All rights reserved | Design by<span><a href="https://github.com/Reeyou">Reeyou</a></span></p>
+        <p>Copyright © 2019-Present iMall. All rights reserved | Design by<span><a href="https://github.com/Reeyou" target='_Blank'>Reeyou</a></span></p>
       </div>
     )
   }
