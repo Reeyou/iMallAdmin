@@ -6,8 +6,24 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const webpackConfig = require('../webpack.config.js')
 const compiler = webpack(webpackConfig)
 const compression = require('compression')
+var proxy = require('http-proxy-middleware')
 
 const port = 8090
+
+// 后端接口代理
+// const context = "/api/*"
+// const options = {
+//   target: "http://localhost:8088/",
+//   pathRewrite: { '^/api': '' }, // 重写路径
+//   changeOrigin: true
+// }
+app.use(proxy('/api',{
+  target: "http://localhost:8088/",
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api': ''
+  }
+}))
 
 // webpack编译
 app.use(webpackDevMiddware(compiler, {
