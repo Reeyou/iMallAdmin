@@ -25,8 +25,9 @@ export default class PageTable extends Component {
   }
 
   render() {
-    const {data, columns, title} = this.props
-    console.log(this.props)
+    const {data, dataSource, columns, title} = this.props
+    // console.log("111111111")
+    // console.log(this.props)
     return (
       <div className='table'>
         <div className="title">
@@ -34,7 +35,7 @@ export default class PageTable extends Component {
         </div>
         <Table 
           columns={columns} 
-          dataSource={data} 
+          dataSource={data.list === undefined ? data : data.list} 
         />
         <div className="page">
           <LocaleProvider locale={zh_CN}>
@@ -44,12 +45,12 @@ export default class PageTable extends Component {
               onChange={this.handleChangePage}
               onShowSizeChange={this.showSizeChange}
               defaultCurrent={1}
-              total={500}
+              total={data.total}
             />
           </LocaleProvider>
         </div>
         <div className="total">
-          总共 {this.state.total} 条信息
+          总共 {data.total} 条信息
         </div>
       </div>
     )

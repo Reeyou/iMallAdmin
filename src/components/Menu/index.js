@@ -60,7 +60,7 @@ export default class MallMenu extends Component {
   }
 
   render() {
-    console.log(Boolean(menulist[3].children))
+    // console.log(Boolean(menulist[3].children))
     return (
       <div className='menu'>
         <div className='menu_header'>

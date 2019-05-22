@@ -4,98 +4,122 @@
 **/
 import React, { Component } from 'react'
 import Header from '@/components/Index/header'
-import Menu from '@/components/Menu'
-import PageTable from '@/components/PageTable'
-import PageBread from '@/components/PageBread'
-import { Divider, Tag } from 'antd';
+import MainMenu from '@/components/Menu'
+import Category from './leftSideMenu/categoryMenu'
+import { 
+  Menu,
+  Icon ,
+  Spin
+} from 'antd';
+import  { 
+  getCategoryList,
+  getCategoryChildrenList,
+  addCategory,
+  updateCategory
+ } from '@/services/productApi'
+ import './index.less'
+
+ const SubMenu = Menu.SubMenu;
 
 class CategoryManage extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      pageNum: 1,
+      pageSize: 10,
+      data: [],
+      childData: [],
+      tabStatus: false, // 默认收起状态
+      currentIndex: 0, // 当前tabIndex
+      itemLoading: false
+    }
   }
-  data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
-  ];
-  
-  columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-      render: text => <a href="javascript:;">{text}</a>,
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-    {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: tags => (
-        <span>
-          {tags.map(tag => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </span>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <span>
-          <a href="javascript:;">Invite {record.name}</a>
-          <Divider type="vertical" />
-          <a href="javascript:;">Delete</a>
-        </span>
-      ),
-    },
-  ]; 
+  componentWillMount() {
+    this.getData()
+  }
+
+  getData() {
+    const params = {
+      pageNum: this.state.pageNum,
+      pageSize: this.state.pageSize
+    }
+    getCategoryList(params).then(res => {
+      if(res.status == 0) {
+        this.setState( {
+          data: res.data
+        },() => {
+          console.log(this.state.data)
+        })
+      }
+    })
+    
+  }
+  handleItemClick(e) {
+    getCategoryChildrenList({categoryId: e.value}).then(res => {
+      if(res.status == 0) {
+        this.setState( {
+          childData: res.data,
+          itemLoading: true
+        },() => {
+          this.setState({
+            itemLoading: false
+          })
+        })
+      }
+    })
+  }
   render() {
+    const { currentIndex, data, childData } = this.state
     return (
       <div>
         <Header />
-        <Menu />
-        <PageTable
-          title='品类管理'
-          data={this.data}
-          columns={this.columns}
-        />
+        <MainMenu />
+        <div className="categoryWrapper">
+          <div className="category_left">
+            <h2>分类管理</h2>
+            <Menu
+              onClick={this.handleClick}
+              style={{ width: 256 }}
+              defaultOpenKeys={['title']}
+              mode="inline"
+            >
+              <SubMenu
+                key="title"
+                title={
+                  <span>
+                    <Icon type="appstore" />
+                    <span>商品分类列表</span>
+                  </span>
+                }
+              >
+                {
+                  data.map((categoryItem, index) => {
+                    return (
+                      <SubMenu
+                        className='itemList'
+                        key={index}
+                        title={categoryItem.name}
+                        onTitleClick={() => this.handleItemClick({value: categoryItem.id})}
+                        loading={this.state.itemLoading}
+                      >
+                        {
+                          childData.map((categoryChildItem, index) => {
+                            return (
+                              <Menu.Item key={index}>{categoryChildItem}</Menu.Item>
+                            )
+                          })
+                        }
+                      </SubMenu>
+                    )
+                  })
+                }
+              </SubMenu>
+            </Menu>
+          </div>
+          <Category
+            currentIndex={currentIndex}
+          />
+        </div>
       </div>
     )
   }

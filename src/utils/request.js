@@ -34,7 +34,7 @@ export default function request(method, url, params) {
   //封装Get方法
   function Get(url, params) {
     return new Promise((resolve, reject) => {
-      axios.get(url, params)
+      axios.get(url, qs.stringify(params))
       .then(res => {
         resolve(res.data);
       })
@@ -48,7 +48,6 @@ export default function request(method, url, params) {
   //qs.stringify()将对象 序列化成Url的形式，以&进行拼接
   //qs.parse()将Url解析成对象的形式
   function Post(url, params) {
-    console.log(qs.stringify(params))
     return new Promise((resolve, reject) => {
       axios.post(url, qs.stringify(params))
       .then(res => {

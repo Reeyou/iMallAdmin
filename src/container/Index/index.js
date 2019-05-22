@@ -32,9 +32,9 @@ class Index extends Component {
           username: value.username,
           password: value.password
         }
-        // console.log(params)
         getUserLogin(params).then(res => {
-          if(res.code == 200) {
+          if(res.status == 0) {
+            this.props.history.push('/home')
             this.setState({
               data: res.data
             })

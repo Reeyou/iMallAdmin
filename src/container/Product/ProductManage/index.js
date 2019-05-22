@@ -2,92 +2,88 @@
   @Author: Reeyou  
   @Params: 商品管理 
 **/
-/**
-  @Author: Reeyou  
-  @Params: 首页
-**/
 import React, { Component } from 'react'
 import Header from '@/components/Index/header'
 import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
 import PageBread from '@/components/PageBread'
 import { Divider, Tag } from 'antd';
+import  { 
+  getProductList,
+  addOrUpdateProduct,
+  getProductDetail,
+  updateProductStatus
+ } from '@/services/productApi'
+ import '../index.less'
 
+ const statusList = ["上架中", "已下架"]
 class ProductManage extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      pageNum: 1,
+      pageSize: 10,
+      data: []
+    }
   }
-  data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
-  ];
+  componentWillMount() {
+    this.getData()
+  }
+
+  getData() {
+    const params = {
+      pageNum: this.state.pageNum,
+      pageSize: this.state.pageSize
+    }
+    getProductList(params).then(res => {
+      if(res.status == 0) {
+        this.setState({
+          data: res.data
+        },() => {
+          // console.log(this.state.data)
+        })
+      }
+    })
+  }
   
   columns = [
     {
-      title: 'Name',
+      title: '商品Id',
+      dataIndex: 'categoryId',
+      key: 'icategoryIdd',
+    },
+    {
+      title: '商品名称',
       dataIndex: 'name',
       key: 'name',
-      render: text => <a href="javascript:;">{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: '价格',
+      dataIndex: 'price',
+      key: 'price',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => {
+        return (
+          <div>
+            <span>{statusList[status]}</span>
+          </div>
+        )
+      }
     },
     {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: tags => (
-        <span>
-          {tags.map(tag => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </span>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <span>
-          <a href="javascript:;">Invite {record.name}</a>
-          <Divider type="vertical" />
-          <a href="javascript:;">Delete</a>
-        </span>
-      ),
+      title: '操作',
+      render: () => {
+        return (
+          <div>
+            <span className="edit">查看</span>
+            <span className="edit edit_right">编辑</span>
+          </div>
+        )
+      }
     },
   ]; 
   render() {
@@ -98,7 +94,7 @@ class ProductManage extends Component {
         {/* <PageBread />   */}
         <PageTable
           title='商品列表'
-          data={this.data}
+          data={this.state.data}
           columns={this.columns}
         />
       </div>

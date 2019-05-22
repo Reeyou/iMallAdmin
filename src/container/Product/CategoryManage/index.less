@@ -1,0 +1,32 @@
+.categoryWrapper {
+  // width: 60%;
+  margin: 0px 28px 0px 268px;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+  display: flex;
+  .category_left {
+    flex: 0 0 300px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset -1px 0 0 0 rgba(0,0,0,.08);
+    .ant-menu-root {
+      width: 100%!important;
+      margin-top: 20px;
+      .itemList {
+        padding-left: 10px;
+      }
+    }
+    
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 40px;
+      padding-left: 24px;
+    }
+  }
+  .category_right {
+    width: 100%;
+    margin: 200px 0 0 0 ;
+  }
+}
