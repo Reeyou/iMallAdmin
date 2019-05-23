@@ -29,9 +29,14 @@ class CategoryManage extends Component {
       pageSize: 10,
       data: [],
       childData: [],
+      index: 0,
       tabStatus: false, // 默认收起状态
       currentIndex: 0, // 当前tabIndex
-      itemLoading: false
+      itemLoading: false,
+      selectName: '',
+      selectChildName: '',
+      selectParentId: 0
+
     }
   }
   componentWillMount() {
@@ -55,7 +60,14 @@ class CategoryManage extends Component {
     
   }
   handleItemClick(e) {
-    getCategoryChildrenList({categoryId: e.value}).then(res => {
+    console.log(e.value)
+    this.setState({
+      selectValue: e.value,
+      selectName: e.name,
+      selectParentId: e.parentId
+    })
+    // 每次请求都会渲染同一组值
+    getCategoryChildrenList({parentId: e.value}).then(res => {
       if(res.status == 0) {
         this.setState( {
           childData: res.data,
@@ -68,8 +80,15 @@ class CategoryManage extends Component {
       }
     })
   }
+  //
+  handleChildItemClick(e) {
+    this.setState({
+      selectChildName: e.name,
+      selectParentId: e.parentId
+    }) 
+  }
   render() {
-    const { currentIndex, data, childData } = this.state
+    const { currentIndex, data, childData, selectName, selectChildName, selectParentId } = this.state
     return (
       <div>
         <Header />
@@ -99,13 +118,16 @@ class CategoryManage extends Component {
                         className='itemList'
                         key={index}
                         title={categoryItem.name}
-                        onTitleClick={() => this.handleItemClick({value: categoryItem.id})}
-                        loading={this.state.itemLoading}
+                        onTitleClick={() => this.handleItemClick({value: categoryItem.id, name: categoryItem.name, parentId: categoryItem.parentId})}
+                        // loading={this.state.itemLoading}
                       >
                         {
                           childData.map((categoryChildItem, index) => {
                             return (
-                              <Menu.Item key={index}>{categoryChildItem}</Menu.Item>
+                              <Menu.Item
+                                key={index}
+                                onClick={() => this.handleChildItemClick({name: categoryChildItem.name, selectParentId: categoryChildItem.parentId})}
+                              >{categoryChildItem.name}</Menu.Item>
                             )
                           })
                         }
@@ -118,6 +140,10 @@ class CategoryManage extends Component {
           </div>
           <Category
             currentIndex={currentIndex}
+            data={data}
+            currentName={selectName}
+            currentChildName={selectChildName}
+            currentId={selectParentId}
           />
         </div>
       </div>

@@ -73,7 +73,7 @@ export default class MallMenu extends Component {
         </Button>
         <Menu
           mode="inline"
-          theme="dark"
+          // theme="dark"
           inlineCollapsed={this.state.collapsed}
         >
           {

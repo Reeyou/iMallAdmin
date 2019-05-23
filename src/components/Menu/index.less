@@ -7,10 +7,17 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: @iBlack;
+  background: white;
+  box-shadow: inset -1px 0 0 0 rgb(0,0,0);
+  z-index:999;
+  zoom: 1;
   .ant-menu-dark {
     background: @iBlack;
   }
+  .ant-menu-inline {
+    border-right: 1px solid #000;
+  }
+
   .ant-menu-dark .ant-menu-inline.ant-menu-sub {
     background: @iBlackRgba;
   }
@@ -34,7 +41,7 @@
     }
   }
   .ant-menu-sub .ant-menu-item{
-    padding-left: 74px!important;
+    padding-left: 84px!important;
     margin: 10px 0;
   }
   .ant-menu-item, 
@@ -42,7 +49,7 @@
     margin: 12px 0;
     i {
       font-size: 20px;
-      color: #fff;
+      color: #000;
       padding-right: 30px;
     }
   }
