@@ -41,16 +41,16 @@ let menulist = [
     key: '05',
     icon: 'iconfont icon-setting',
     children: [
-      {
-        path: '/authManage',
-        name: '权限管理',
-        key: '0501'
-      },
-      {
-        path: '/messageManage',
-        name: '信息管理',
-        key: '0502'
-      },
+      // {
+      //   path: '/authManage',
+      //   name: '权限管理',
+      //   key: '0501'
+      // },
+      // {
+      //   path: '/messageManage',
+      //   name: '信息管理',
+      //   key: '0502'
+      // },
       {
         path: '/logManage',
         name: '日志管理',

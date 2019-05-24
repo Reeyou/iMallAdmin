@@ -69,7 +69,7 @@ export default class MallMenu extends Component {
           </div>
         </div>
         <Button type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16 }}>
-          <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
+          <Icon  type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
         </Button>
         <Menu
           mode="inline"

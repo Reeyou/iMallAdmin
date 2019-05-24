@@ -1,15 +1,46 @@
 .table {
   padding: 28px 38px 38px 278px;
+  position: relative;
   .title {
     h2 {
       font-size: 24px;
       font-weight: 600;
       padding-bottom: 10px;
     }
+    
+  }
+  .addBtn {
+    position: absolute;
+    right: 50px;
+    top: 34px;
+  }
+  .ant-form-item-label {
+    text-align: left;
+  }
+  .ant-advanced-search-form .ant-form-item {
+    display: flex;
+  }
+  .ant-form {
+    clear: both;
+    font-size: 0;
+    overflow: hidden;
+    padding-top:20px;
+  }
+  .ant-form-item {
+    width: 100%;
+    display: inline-block;
+  }
+  .ant-advanced-search-form .ant-form-item-control-wrapper {
+    flex: 1;
   }
   .ant-table-pagination.ant-pagination {
     display: none;
   }
+  .ant-table-tbody > tr > td,
+  .ant-table-thead > tr > th {
+    text-align: center;
+  }
+
   .total,
   .page {
     margin: 20px 0;

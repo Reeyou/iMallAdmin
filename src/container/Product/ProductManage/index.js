@@ -7,7 +7,7 @@ import Header from '@/components/Index/header'
 import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
 import PageBread from '@/components/PageBread'
-import { Divider, Tag } from 'antd';
+import { Divider, Tag, Button } from 'antd';
 import  { 
   getProductList,
   addOrUpdateProduct,
@@ -45,7 +45,57 @@ class ProductManage extends Component {
       }
     })
   }
-  
+  //
+  addProduct = () => {
+    addOrUpdateProduct().then(res => {
+      if(res.status == 0) {
+        console.log(111)
+        console.log(res.data)
+      }
+    })
+  }
+  filters = [
+    {
+      name: '商品名称',
+      key: '商品名称',
+      type: 'Input'
+    },
+    {
+      name: '商品分类',
+      key: '商品分类',
+      type: 'Input'
+    },
+    {
+      name: '状态',
+      key: '状态',
+      type: 'Select',
+      statusList: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: '0',
+          label: '销售中'
+        },
+        {
+          value: '1',
+          label: '已下架'
+        }
+      ]
+    },
+    {
+      name: '商品分类',
+      key: '商品Id',
+      type: 'Input'
+    },
+    {
+      name: '创建时间',
+      key: '创建时间',
+      type: 'DataPicker'
+    }
+    
+  ]
   columns = [
     {
       title: '商品Id',
@@ -56,6 +106,16 @@ class ProductManage extends Component {
       title: '商品名称',
       dataIndex: 'name',
       key: 'name',
+    },
+    {
+      title: '商品图片',
+      dataIndex: 'price',
+      key: 'price',
+    },
+    {
+      title: '商品分类',
+      dataIndex: 'price',
+      key: 'price',
     },
     {
       title: '价格',
@@ -79,8 +139,9 @@ class ProductManage extends Component {
       render: () => {
         return (
           <div>
-            <span className="edit">查看</span>
-            <span className="edit edit_right">编辑</span>
+            <Button type="primary" className="edit">查看</Button>
+            <Button type="dashed" className="edit">编辑</Button>
+            <Button type="danger" className="edit edit_right">删除</Button>
           </div>
         )
       }
@@ -96,6 +157,11 @@ class ProductManage extends Component {
           title='商品列表'
           data={this.state.data}
           columns={this.columns}
+          filters={this.filters}
+          onAddBtn={{
+            onAdd: this.addProduct,
+            text: '添加商品'
+          }}
         />
       </div>
     )

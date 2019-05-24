@@ -4,38 +4,31 @@
 **/
 import React, { Component } from 'react'
 import Header from '@/components/Index/header'
+import Menu from '@/components/Menu'
+import PageTable from '@/components/PageTable'
 import MainMenu from '@/components/Menu'
 import Category from './leftSideMenu/categoryMenu'
 import { 
-  Menu,
   Icon ,
-  Spin
+  Spin,
+  Button
 } from 'antd';
 import  { 
-  getCategoryList,
-  getCategoryChildrenList,
-  addCategory,
-  updateCategory
+  getProductList,
+  addOrUpdateProduct,
+  getProductDetail,
+  updateProductStatus
  } from '@/services/productApi'
- import './index.less'
+ import '../index.less'
 
- const SubMenu = Menu.SubMenu;
-
+ const statusList = ["上架中", "已下架"]
 class CategoryManage extends Component {
   constructor(props) {
     super(props)
     this.state = {
       pageNum: 1,
       pageSize: 10,
-      data: [],
-      childData: [],
-      index: 0,
-      tabStatus: false, // 默认收起状态
-      currentIndex: 0, // 当前tabIndex
-      itemLoading: false,
-      selectName: '',
-      selectChildName: '',
-      selectParentId: 0
+      data: []
 
     }
   }
@@ -48,105 +41,110 @@ class CategoryManage extends Component {
       pageNum: this.state.pageNum,
       pageSize: this.state.pageSize
     }
-    getCategoryList(params).then(res => {
+    getProductList(params).then(res => {
       if(res.status == 0) {
-        this.setState( {
+        this.setState({
           data: res.data
         },() => {
-          console.log(this.state.data)
+          // console.log(this.state.data)
         })
       }
     })
     
   }
-  handleItemClick(e) {
-    console.log(e.value)
-    this.setState({
-      selectValue: e.value,
-      selectName: e.name,
-      selectParentId: e.parentId
-    })
-    // 每次请求都会渲染同一组值
-    getCategoryChildrenList({parentId: e.value}).then(res => {
-      if(res.status == 0) {
-        this.setState( {
-          childData: res.data,
-          itemLoading: true
-        },() => {
-          this.setState({
-            itemLoading: false
-          })
-        })
+
+  filters = [
+    {
+      name: '分类名称',
+      key: '商品名称',
+      type: 'Input'
+    },
+    {
+      name: '状态',
+      key: '状态',
+      type: 'Select',
+      statusList: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: '0',
+          label: '销售中'
+        },
+        {
+          value: '1',
+          label: '已下架'
+        }
+      ]
+    },
+  ]
+  columns = [
+    {
+      title: '分类id',
+      dataIndex: 'categoryId',
+      key: 'icategoryIdd',
+    },
+    {
+      title: '分类名称',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '级别',
+      dataIndex: 'price',
+      key: 'price',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => {
+        return (
+          <div>
+            <span>{statusList[status]}</span>
+          </div>
+        )
       }
-    })
-  }
-  //
-  handleChildItemClick(e) {
-    this.setState({
-      selectChildName: e.name,
-      selectParentId: e.parentId
-    }) 
-  }
+    },
+    {
+      title: '操作',
+      render: () => {
+        return (
+          <div>
+            <Button type="primary" className="edit">查看分类</Button>
+            <Button type="dashed" className="edit">编辑</Button>
+            <Button type="danger" className="edit edit_right">删除</Button>
+          </div>
+        )
+      }
+    },
+  ]; 
   render() {
     const { currentIndex, data, childData, selectName, selectChildName, selectParentId } = this.state
     return (
       <div>
         <Header />
-        <MainMenu />
-        <div className="categoryWrapper">
-          <div className="category_left">
-            <h2>分类管理</h2>
-            <Menu
-              onClick={this.handleClick}
-              style={{ width: 256 }}
-              defaultOpenKeys={['title']}
-              mode="inline"
-            >
-              <SubMenu
-                key="title"
-                title={
-                  <span>
-                    <Icon type="appstore" />
-                    <span>商品分类列表</span>
-                  </span>
-                }
-              >
-                {
-                  data.map((categoryItem, index) => {
-                    return (
-                      <SubMenu
-                        className='itemList'
-                        key={index}
-                        title={categoryItem.name}
-                        onTitleClick={() => this.handleItemClick({value: categoryItem.id, name: categoryItem.name, parentId: categoryItem.parentId})}
-                        // loading={this.state.itemLoading}
-                      >
-                        {
-                          childData.map((categoryChildItem, index) => {
-                            return (
-                              <Menu.Item
-                                key={index}
-                                onClick={() => this.handleChildItemClick({name: categoryChildItem.name, selectParentId: categoryChildItem.parentId})}
-                              >{categoryChildItem.name}</Menu.Item>
-                            )
-                          })
-                        }
-                      </SubMenu>
-                    )
-                  })
-                }
-              </SubMenu>
-            </Menu>
-          </div>
-          <Category
+        <Menu />
+        {/* <PageBread />   */}
+        <PageTable
+          title='分类列表'
+          data={this.state.data}
+          columns={this.columns}
+          filters={this.filters}
+          onAddBtn={{
+            onAdd: this.addProduct,
+            text: '添加分类'
+          }}
+        />
+        {/* <Category
             currentIndex={currentIndex}
             data={data}
             currentName={selectName}
             currentChildName={selectChildName}
             currentId={selectParentId}
-          />
-        </div>
-      </div>
+          /> */}
+      </div>  
     )
   }
 }

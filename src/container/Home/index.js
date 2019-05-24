@@ -92,11 +92,11 @@ class Home extends Component {
         <Header />
         <Menu />
         {/* <PageBread />   */}
-        <PageTable
+        {/* <PageTable
           title='商品列表'
           data={this.data}
           columns={this.columns}
-        />
+        /> */}
       </div>
     )
   }

@@ -7,84 +7,123 @@ import React, { Component } from 'react'
 import Header from '@/components/Index/header'
 import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
-import PageBread from '@/components/PageBread'
-import { Divider, Tag } from 'antd';
+import { Button, Tag } from 'antd';
+import  { 
+  getProductList,
+  addOrUpdateProduct,
+  getProductDetail,
+  updateProductStatus
+ } from '@/services/productApi'
+ import '@/assets/css/global.less'
 
 class LogManage extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      pageNum: 1,
+      pageSize: 10,
+      data: []
+    }
   }
-  data = [
+  componentWillMount() {
+    this.getData()
+  }
+
+  getData() {
+    const params = {
+      pageNum: this.state.pageNum,
+      pageSize: this.state.pageSize
+    }
+    getProductList(params).then(res => {
+      if(res.status == 0) {
+        this.setState({
+          data: res.data
+        },() => {
+          // console.log(this.state.data)
+        })
+      }
+    })
+  }
+
+  filters = [
     {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
+      name: '商品名称',
+      key: '商品名称',
+      type: 'Input'
     },
     {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
+      name: '商品分类',
+      key: '商品分类',
+      type: 'Input'
     },
     {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
+      name: '状态',
+      key: '状态',
+      type: 'Select',
+      statusList: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: '0',
+          label: '销售中'
+        },
+        {
+          value: '1',
+          label: '已下架'
+        }
+      ]
     },
-  ];
-  
+    {
+      name: '商品分类',
+      key: '商品Id',
+      type: 'Input'
+    },
+    {
+      name: '创建时间',
+      key: '创建时间',
+      type: 'DataPicker'
+    }
+    
+  ]
   columns = [
     {
-      title: 'Name',
+      title: '商品Id',
+      dataIndex: 'categoryId',
+      key: 'icategoryIdd',
+    },
+    {
+      title: '商品名称',
       dataIndex: 'name',
       key: 'name',
-      render: text => <a href="javascript:;">{text}</a>,
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: '商品图片',
+      dataIndex: 'price',
+      key: 'price',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: '商品分类',
+      dataIndex: 'price',
+      key: 'price',
     },
     {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: tags => (
-        <span>
-          {tags.map(tag => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </span>
-      ),
+      title: '价格',
+      dataIndex: 'price',
+      key: 'price',
     },
     {
-      title: 'Action',
-      key: 'action',
-      render: (text, record) => (
-        <span>
-          <a href="javascript:;">Invite {record.name}</a>
-          <Divider type="vertical" />
-          <a href="javascript:;">Delete</a>
-        </span>
-      ),
+      title: '操作',
+      render: () => {
+        return (
+          <div>
+            <Button type="primary" className="edit">查看</Button>
+            <Button type="dashed" className="edit">编辑</Button>
+            <Button type="danger" className="edit edit_right">删除</Button>
+          </div>
+        )
+      }
     },
   ]; 
   render() {
@@ -94,9 +133,10 @@ class LogManage extends Component {
         <Menu />
         {/* <PageBread />   */}
         <PageTable
-          title='日志管理'
-          data={this.data}
+          title='日志列表'
+          data={this.state.data}
           columns={this.columns}
+          filters={this.filters}
         />
       </div>
     )
