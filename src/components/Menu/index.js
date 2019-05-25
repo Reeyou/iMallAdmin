@@ -64,13 +64,10 @@ export default class MallMenu extends Component {
     return (
       <div className='menu'>
         <div className='menu_header'>
-          <div className='container'>
+          {/* <div className='container'>
             <img src={logo} alt="" />
-          </div>
+          </div> */}
         </div>
-        <Button type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16 }}>
-          <Icon  type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
-        </Button>
         <Menu
           mode="inline"
           // theme="dark"

@@ -14,7 +14,7 @@ import {
   Button
 } from 'antd';
 import  { 
-  getCategoryList,
+  getCategoryChildrenList,
   addOrUpdateProduct,
   getProductDetail,
   updateProductStatus
@@ -23,7 +23,7 @@ import  {
 
  const statusList = ["上架中", "已下架"]
  const levelList = ["一级","二级"]
-class CategoryManage extends Component {
+class CategoryChildManage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -38,11 +38,13 @@ class CategoryManage extends Component {
   }
 
   getData() {
+    const parentId = this.props.location.search.split('?')[1]
     const params = {
       pageNum: this.state.pageNum,
-      pageSize: this.state.pageSize
+      pageSize: this.state.pageSize,
+      parentId: parentId
     }
-    getCategoryList(params).then(res => {
+    getCategoryChildrenList(params).then(res => {
       if(res.status == 0) {
         this.setState({
           data: res.data
@@ -52,11 +54,6 @@ class CategoryManage extends Component {
       }
     })
     
-  }
-  //
-  handleLinkTo(e) {
-    // console.log(e.parentId)
-    this.props.history.push(`/categoryList/categoryChildList/?${e.parentId}`)
   }
 
   filters = [
@@ -101,8 +98,7 @@ class CategoryManage extends Component {
       dataIndex: 'parentId',
       key: 'parentId',
       render: (text) => (
-        // console.log()
-        text == "0" ? <span>{levelList[0]}</span> : ''
+        text == "0" ?  '' : <span>{levelList[1]}</span>
       )
     },
     {
@@ -124,11 +120,10 @@ class CategoryManage extends Component {
     },
     {
       title: '操作',
-      render: (record) => {
+      render: () => {
         return (
           <div>
-            <Button type="primary" className="edit" onClick={(e) => this.handleLinkTo({parentId: record.id})}>查看分类</Button>
-            <Button type="dashed" className="edit">编辑</Button>
+            <Button type="primary" className="edit">编辑</Button>
             <Button type="danger" className="edit edit_right">删除</Button>
           </div>
         )
@@ -163,4 +158,4 @@ class CategoryManage extends Component {
     )
   }
 }
-export default CategoryManage;
+export default CategoryChildManage;

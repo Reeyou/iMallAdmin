@@ -132,10 +132,10 @@ class PageTable extends Component {
           <Col span={8} style={{ textAlign: 'left', paddingLeft: '10px' }}>
             <Button type="primary" htmlType="submit">筛选</Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>重置</Button>
-            <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
+            {/* <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
               {this.state.expand ? <span>展开</span> : <span>收起</span>}
               <Icon type={this.state.expand ? 'down' : 'up'} />
-            </a>
+            </a> */}
           </Col>
         </Form>
         <Table 

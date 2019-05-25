@@ -88,7 +88,7 @@ class Home extends Component {
   ]; 
   render() {
     return (
-      <div>
+      <div style={{display: 'flex'}}>
         <Header />
         <Menu />
         {/* <PageBread />   */}
