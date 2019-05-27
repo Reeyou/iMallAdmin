@@ -150,7 +150,7 @@ class ProductManage extends Component {
   render() {
     return (
       <div>
-        <Header />
+        {/* <Header /> */}
         <Menu />
         {/* <PageBread />   */}
         <PageTable

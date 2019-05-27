@@ -6,11 +6,7 @@ import React, { Component } from 'react'
 import Header from '@/components/Index/header'
 import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
-import MainMenu from '@/components/Menu'
-// import Category from './leftSideMenu/categoryMenu'
 import { 
-  Icon ,
-  Spin,
   Button
 } from 'antd';
 import  { 
@@ -134,9 +130,8 @@ class CategoryChildManage extends Component {
     const { currentIndex, data, childData, selectName, selectChildName, selectParentId } = this.state
     return (
       <div>
-        {/* <Header /> */}
-        {/* <Menu /> */}
-        {/* <PageBread />   */}
+        <Header />
+        <Menu />
         <PageTable
           title='分类列表'
           data={this.state.data}
@@ -147,13 +142,6 @@ class CategoryChildManage extends Component {
             text: '添加分类'
           }}
         />
-        {/* <Category
-            currentIndex={currentIndex}
-            data={data}
-            currentName={selectName}
-            currentChildName={selectChildName}
-            currentId={selectParentId}
-          /> */}
       </div>  
     )
   }

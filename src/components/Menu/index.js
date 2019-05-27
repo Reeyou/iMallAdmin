@@ -64,9 +64,9 @@ export default class MallMenu extends Component {
     return (
       <div className='menu'>
         <div className='menu_header'>
-          {/* <div className='container'>
+          <div className='container'>
             <img src={logo} alt="" />
-          </div> */}
+          </div>
         </div>
         <Menu
           mode="inline"
