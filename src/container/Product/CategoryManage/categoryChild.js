@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Header from '@/components/Index/header'
 import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
+import PageBread from '@/components/PageBread'
 import { 
   Button
 } from 'antd';
@@ -132,14 +133,15 @@ class CategoryChildManage extends Component {
       <div>
         <Header />
         <Menu />
+        <PageBread />
         <PageTable
-          title='分类列表'
+          title=''
           data={this.state.data}
           columns={this.columns}
           filters={this.filters}
           onAddBtn={{
             onAdd: this.addProduct,
-            text: '添加分类'
+            text: '添加子分类'
           }}
         />
       </div>  

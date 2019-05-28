@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import { Menu, Dropdown, Icon } from 'antd';
+import { Menu, Dropdown, Icon, Layout } from 'antd';
 import './index.less'
 
-export default class Header extends Component {
+const { Header, Sider, Content } = Layout;
+export default class HeaderApp extends Component {
   constructor(props) {
     super(props)
   }
@@ -21,30 +22,26 @@ export default class Header extends Component {
       </Menu>
     );
     return (
-      <div className='header'>
-        <div className="container clearFix">
-          {/* <div className="logo">
-            <img src="" alt=""/>
-            <p>iMall后台管理平台</p>
-          </div> */}
-          <div className="user">
-            <img src="" alt=""/>
-            <div className='info'>
-              <Dropdown overlay={menu}>
-                <a className="ant-dropdown-link" href="#">
-                  Reeyou <Icon type="down" />
-                </a>
-              </Dropdown>
-            </div>
-            <div className="message">
-              <i className='iconfont icon-duanxin'></i>
-            </div>
-            <div className="skin">
-              <i className='iconfont icon-icon_skin'></i>
+        <div className='header'>
+          <div className="container clearFix">
+            <div className="user">
+              <img src="" alt=""/>
+              <div className='info'>
+                <Dropdown overlay={menu}>
+                  <a className="ant-dropdown-link" href="#">
+                    Reeyou <Icon type="down" />
+                  </a>
+                </Dropdown>
+              </div>
+              <div className="message">
+                <i className='iconfont icon-duanxin'></i>
+              </div>
+              <div className="skin">
+                <i className='iconfont icon-icon_skin'></i>
+              </div>
             </div>
           </div>
         </div>
-      </div>
     )
   }
 }

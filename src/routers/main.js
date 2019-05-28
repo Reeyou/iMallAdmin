@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Switch, Redirect, withRouter } from 'react-router-dom'
+import Routers from './Routers'
+import { Switch, Redirect, withRouter, Route } from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
-import Routers from './index'
 
 import MenuApp from '../components/Menu' 
 import HeaderApp from '../components/Index/header' 
@@ -20,21 +20,51 @@ export default class mainView extends Component {
       collapsed: !this.state.collapsed,
     });
   };
+
+  //
+  renderContent = () => {
+    let resultRouters = []
+
+    routers.map((router, index) => {
+      if(router != null) {
+        resultRouters.push({
+          path: router.path,
+          name: router.name,
+          component: router.component,
+          exact: router.exact
+        })
+      }
+    })
+  }
   render() {
+    console.log(111)
     console.log(Routers)
+    const logoStyle = {
+      height: "60px",
+      background: "rgb(0,0,0)",
+    }
+    const iconStyle = {
+      fontSize: '18px',
+      lineHeight: '64px',
+      padding: '0 24px',
+      cursor: 'pointer',
+      transition: 'color 0.3s',
+      display: 'inline-block'
+    }
     return (
       <Layout>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-          <div className="logo" />
+          <div style={logoStyle} >111</div>
           <MenuApp />
         </Sider>
         <Layout>
           <Header style={{ background: '#fff', padding: 0 }}>
             <Icon
-              className="trigger"
+              style={iconStyle}
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
+            <HeaderApp />
           </Header>
           <Content
             style={{
@@ -44,13 +74,18 @@ export default class mainView extends Component {
               minHeight: 280,
             }}
           >
-            {/* <Switch>
+            <Switch>
               {
-                Routers.map(item => {
-
+                Routers.map(route => {
+                  <Route
+                    key={route.key}
+                    exact={route.exact ? true : false}
+                    path={route.path}
+                    component={route.component}
+                  />
                 })
               }
-            </Switch> */}
+            </Switch>
           </Content>
         </Layout>
       </Layout>

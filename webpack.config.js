@@ -78,6 +78,7 @@ module.exports = {
       template: './index.html',
       filename: './index.html',
       inject: true,
+      chunksSortMode: "none",
       // favicon: path.resolve('favicon.ico'),
       minify: {
           collapseWhitespace: true,

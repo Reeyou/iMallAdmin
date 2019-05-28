@@ -60,17 +60,10 @@ export default class MallMenu extends Component {
   }
 
   render() {
-    // console.log(Boolean(menulist[3].children))
     return (
       <div className='menu'>
-        <div className='menu_header'>
-          <div className='container'>
-            <img src={logo} alt="" />
-          </div>
-        </div>
         <Menu
           mode="inline"
-          // theme="dark"
           inlineCollapsed={this.state.collapsed}
         >
           {

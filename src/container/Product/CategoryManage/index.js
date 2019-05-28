@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Header from '@/components/Index/header'
 import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
+import PageBread from '@/components/PageBread'
 import { 
   Button
 } from 'antd';
@@ -71,11 +72,11 @@ class CategoryManage extends Component {
           label: '全部'
         },
         {
-          value: '0',
+          value: 'true',
           label: '销售中'
         },
         {
-          value: '1',
+          value: 'false',
           label: '已下架'
         }
       ]
@@ -107,9 +108,7 @@ class CategoryManage extends Component {
       key: 'status',
       render: (status) => {
         return (
-          <div>
-            <span>{statusList[status]}</span>
-          </div>
+          status == "true" ? <span>{statusList[status]}</span> : ''
         )
       }
     },
@@ -132,11 +131,11 @@ class CategoryManage extends Component {
     },
   ]; 
   render() {
-    const { currentIndex, data, childData, selectName, selectChildName, selectParentId } = this.state
     return (
       <div>
         <Header />
         <Menu />
+        <PageBread />
         <PageTable
           title='分类列表'
           data={this.state.data}

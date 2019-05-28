@@ -150,9 +150,6 @@ class ProductManage extends Component {
   render() {
     return (
       <div>
-        {/* <Header /> */}
-        <Menu />
-        {/* <PageBread />   */}
         <PageTable
           title='商品列表'
           data={this.state.data}

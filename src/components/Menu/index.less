@@ -1,23 +1,26 @@
 @import '../../assets/css/global.less';
 @import '../../assets/css/common.less';
 
+.ant-layout-sider {
+  background: #fff;
+}
 .menu {
   position: fixed;
-  top: 0;
+  top: 60px;
   left: 0;
-  width: 240px;
+  width: 200px;
   height: 100vh;
   background: white;
-  box-shadow: inset -1px 0 0 0 rgb(0,0,0);
+  // box-shadow: inset -1px 0 0 0 rgb(0,0,0);
   z-index:999;
   zoom: 1;
   .ant-menu-dark {
     background: @iBlack;
   }
-  .ant-menu-inline {
-    border-right: 1px solid #000;
+  .ant-menu-light,
+  .ant-menu-vertical {
+    height: 100vh;
   }
-
   .ant-menu-dark .ant-menu-inline.ant-menu-sub {
     background: @iBlackRgba;
   }
