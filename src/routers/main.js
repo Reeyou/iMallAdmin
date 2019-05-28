@@ -6,7 +6,11 @@ import { Layout, Menu, Icon } from 'antd';
 import MenuApp from '../components/Menu' 
 import HeaderApp from '../components/Index/header' 
 
+import Loadable from 'react-loadable' // 动态导入加载组件
+import PageLoading from '../components/PageLoading'
 const { Header, Sider, Content } = Layout;
+const CategoryManage = Loadable({loader: () => import('../container/Product/CategoryManage'), loading: PageLoading, delay: 400})
+const ProductManage = Loadable({loader: () => import('../container/Product/ProductManage'), loading: PageLoading, delay: 400})
 
 export default class mainView extends Component {
   constructor(props) {
@@ -40,7 +44,7 @@ export default class mainView extends Component {
     console.log(111)
     console.log(Routers)
     const logoStyle = {
-      height: "60px",
+      height: "64px",
       background: "rgb(0,0,0)",
     }
     const iconStyle = {
@@ -68,14 +72,17 @@ export default class mainView extends Component {
           </Header>
           <Content
             style={{
-              margin: '24px 16px',
+              margin: '1px 0 0 0',
               padding: 24,
-              // background: '#fff',
+              background: '#fff',
               minHeight: 280,
             }}
           >
             <Switch>
-              {
+              <Route path='/' component={ProductManage} exact />
+              <Route path='/productManage' component={ProductManage} exact />
+              <Route path='/categoryManage' component={ProductManage} exact />
+              {/* {
                 Routers.map(route => {
                   <Route
                     key={route.key}
@@ -84,7 +91,7 @@ export default class mainView extends Component {
                     component={route.component}
                   />
                 })
-              }
+              } */}
             </Switch>
           </Content>
         </Layout>

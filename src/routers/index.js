@@ -27,7 +27,9 @@ export default class App extends Component {
     return (
       <HashRouter history={HashHistory}>
         <Switch>
-          <Route path='/' component={MainView} exact />
+          <Route path='/' component={Index} exact />
+          <Route path='/productManage' component={MainView} exact />
+          <Route path='/categoryManage' component={MainView} exact />
           {/* <Route path='/home' component={Home} exact />
           <Route path='/productManage' component={ProductManage} exact />
           <Route path='/categoryManage' component={CategoryManage} exact />
