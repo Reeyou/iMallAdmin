@@ -88,10 +88,7 @@ class Home extends Component {
   ]; 
   render() {
     return (
-      <div style={{display: 'flex'}}>
-        <Header />
-        <Menu />
-        {/* <PageBread />   */}
+      <div>
         {/* <PageTable
           title='商品列表'
           data={this.data}

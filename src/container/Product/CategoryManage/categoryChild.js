@@ -131,9 +131,6 @@ class CategoryChildManage extends Component {
     const { currentIndex, data, childData, selectName, selectChildName, selectParentId } = this.state
     return (
       <div>
-        <Header />
-        <Menu />
-        <PageBread />
         <PageTable
           title=''
           data={this.state.data}

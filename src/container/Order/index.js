@@ -100,13 +100,13 @@ class Order extends Component {
     },
     {
       title: '商品图片',
-      dataIndex: 'price',
-      key: 'price',
+      dataIndex: 'img',
+      key: 'img',
     },
     {
       title: '商品分类',
-      dataIndex: 'price',
-      key: 'price',
+      dataIndex: 'level',
+      key: 'level',
     },
     {
       title: '价格',
@@ -129,9 +129,6 @@ class Order extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <Menu />
-        {/* <PageBread />   */}
         <PageTable
           title='订单列表'
           data={this.state.data}

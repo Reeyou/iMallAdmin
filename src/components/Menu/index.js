@@ -21,6 +21,21 @@ export default class MallMenu extends Component {
     });
   };
 
+  // 阻止事件冒泡
+	stopPropagation(e) {
+		// 取消默认的浏览器自带右键
+		e.preventDefault();
+		// 阻止事件冒泡
+		e.stopPropagation();
+		// 阻止React本地事件冒泡
+		// e.nativeEvent.stopImmediatePropagation()
+  }
+  // linkTo = (e) => {
+  //   console.log(e)
+  //   e.preventDefault()
+  //   // e.stopPropagation();
+  //   // e.nativeEvent.stopImmediatePropagation()
+  // }
   handleMenu() {
     return(
       menulist.map((item, index) => {
@@ -39,7 +54,7 @@ export default class MallMenu extends Component {
                     return  <Menu.Item
                               key={childItem.key}
                             >
-                              <Link to={childItem.path}>
+                              <Link to={childItem.path} onClick={this.linkTo}>
                                 <span>{childItem.name}</span>
                               </Link>
                             </Menu.Item>
@@ -50,7 +65,7 @@ export default class MallMenu extends Component {
               <Menu.Item
                 key={item.key}
               >
-                <Link to={item.path}>
+                <Link to={item.path} onClick={this.linkTo}>
                   <i className={item.icon}></i>
                   <span>{item.name}</span>
                 </Link>

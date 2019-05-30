@@ -129,9 +129,6 @@ class LogManage extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <Menu />
-        {/* <PageBread />   */}
         <PageTable
           title='日志列表'
           data={this.state.data}

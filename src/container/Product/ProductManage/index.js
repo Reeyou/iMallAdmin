@@ -109,13 +109,13 @@ class ProductManage extends Component {
     },
     {
       title: '商品图片',
-      dataIndex: 'price',
-      key: 'price',
+      dataIndex: 'img',
+      key: 'img',
     },
     {
       title: '商品分类',
-      dataIndex: 'price',
-      key: 'price',
+      dataIndex: 'level',
+      key: 'level',
     },
     {
       title: '价格',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Routers from './Routers'
+import MainRouters from './Routers'
 import { Switch, Redirect, withRouter, Route } from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
 
@@ -24,25 +24,7 @@ export default class mainView extends Component {
       collapsed: !this.state.collapsed,
     });
   };
-
-  //
-  renderContent = () => {
-    let resultRouters = []
-
-    routers.map((router, index) => {
-      if(router != null) {
-        resultRouters.push({
-          path: router.path,
-          name: router.name,
-          component: router.component,
-          exact: router.exact
-        })
-      }
-    })
-  }
   render() {
-    console.log(111)
-    console.log(Routers)
     const logoStyle = {
       height: "64px",
       background: "rgb(0,0,0)",
@@ -80,16 +62,26 @@ export default class mainView extends Component {
           >
             <Switch>
               <Route path='/' component={ProductManage} exact />
-              {/* <Route path='/productManage' component={ProductManage} exact /> */}
-              {/* <Route path='/categoryManage' component={CategoryManage} exact /> */}
               {
-                Routers.map(route => {
-                  <Route
-                    key={route.key}
-                    exact={route.exact ? true : false}
-                    path={route.path}
-                    component={route.component}
-                  />
+                MainRouters.map(route => {
+                  // return (
+                  //   <Route
+                  //     key={route.key}
+                  //     exact={route.exact ? true : false}
+                  //     path={route.path}
+                  //     component={route.component}
+                  //   />
+                  // )
+                  route.routers ? route.routers.map(routeItem => {
+                    return (
+                      <Route
+                        key={routeItem.key}
+                        exact={routeItem.exact ? true : false}
+                        path={routeItem.path}
+                        component={routeItem.component}
+                      />
+                    )
+                  }) : ''
                 })
               }
             </Switch>

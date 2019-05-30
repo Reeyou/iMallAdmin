@@ -133,9 +133,6 @@ class CategoryManage extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <Menu />
-        <PageBread />
         <PageTable
           title='分类列表'
           data={this.state.data}
