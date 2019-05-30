@@ -80,9 +80,9 @@ export default class mainView extends Component {
           >
             <Switch>
               <Route path='/' component={ProductManage} exact />
-              <Route path='/productManage' component={ProductManage} exact />
-              <Route path='/categoryManage' component={ProductManage} exact />
-              {/* {
+              {/* <Route path='/productManage' component={ProductManage} exact /> */}
+              {/* <Route path='/categoryManage' component={CategoryManage} exact /> */}
+              {
                 Routers.map(route => {
                   <Route
                     key={route.key}
@@ -91,7 +91,7 @@ export default class mainView extends Component {
                     component={route.component}
                   />
                 })
-              } */}
+              }
             </Switch>
           </Content>
         </Layout>
