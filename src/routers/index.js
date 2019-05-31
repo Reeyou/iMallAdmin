@@ -23,8 +23,6 @@ export default class App extends Component {
     let resultRouters = getRouters(MainRouters)
     this.setState({
       routers: resultRouters
-    },() => {
-      console.log(this.state.routers)
     })
   }
   render() {

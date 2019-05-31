@@ -50,6 +50,7 @@ const routers = [
     routers: [
       {
         path: '/categoryManage/categoryChildList',
+        upperName: '分类列表',
         name: '分类子列表',
         key: 'categoryChildList',
         component: categoryChildList,

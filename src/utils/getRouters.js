@@ -6,6 +6,8 @@ export default function getRouters(Routers) {
       key: route.key,
       path: route.path,
       exact: route.exact,
+      upperName: route.upperName,
+      name: route.name,
       component: route.component
     })
     if(route.routers) {
@@ -13,6 +15,8 @@ export default function getRouters(Routers) {
         resultRouters.push({
           key: routeItem.key,
           path: routeItem.path,
+          upperName: routeItem.upperName,
+          name: routeItem.name,
           exact: routeItem.exact,
           component: routeItem.component
         })

@@ -3,6 +3,7 @@ import MainRouters from './Routers'
 import { Switch, Redirect, withRouter, Route } from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
 import getRouters from '../utils/getRouters'
+import PageBread from '../components/PageBread'
 
 import MenuApp from '../components/Menu' 
 import HeaderApp from '../components/Index/header' 
@@ -29,8 +30,6 @@ export default class mainView extends Component {
     let resultRouters = getRouters(MainRouters)
     this.setState({
       routers: resultRouters
-    },() => {
-      console.log(this.state.routers)
     })
   }
   
@@ -51,7 +50,7 @@ export default class mainView extends Component {
     }
     return (
       <Layout>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+        <Sider width='220' trigger={null} collapsible collapsed={this.state.collapsed}>
           <div style={logoStyle} >111</div>
           <MenuApp />
         </Sider>
@@ -67,11 +66,12 @@ export default class mainView extends Component {
           <Content
             style={{
               margin: '1px 0 0 0',
-              padding: 24,
+              padding: '10px 24px',
               background: '#fff',
               minHeight: 280,
             }}
           >
+          <PageBread />
             <Switch>
               {
                 routers.map(route => {

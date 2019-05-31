@@ -2,11 +2,13 @@ import { observable, action } from 'mobx'
 
 class Global {
   @observable
-  count = 1
+  selectMenuItemKey = sessionStorage.getItem('selectMenuItemKey') ? JSON.parse(sessionStorage.getItem('selectMenuItemKey')) : []
 
   @action
-  setCount = () => {
-    return ++this.count
-  }
+  changeSelectItemKey = selectMenuItemKey => {
+    console.log(selectMenuItemKey)
+    sessionStorage.setItem('selectMenuItemKey', JSON.stringify(selectMenuItemKey))
+    this.selectMenuItemKey = selectMenuItemKey
+}
 }
 export default new Global()

@@ -2,11 +2,14 @@ import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, Button , Icon } from 'antd';
 import './index.less'
+import { observer, inject } from 'mobx-react'
 import logo from '@/assets/img/logo.png'
 import menulist from '@/routers/RouterMenu'
 
 const SubMenu = Menu.SubMenu;
 
+@inject('Global')
+@observer
 export default class MallMenu extends Component {
   constructor(props) {
     super(props),
@@ -37,7 +40,7 @@ export default class MallMenu extends Component {
   //   // e.nativeEvent.stopImmediatePropagation()
   // }
   handleMenu() {
-    return(
+    return(   
       menulist.map((item, index) => {
         return item.children ?  
               <SubMenu
@@ -80,6 +83,7 @@ export default class MallMenu extends Component {
         <Menu
           mode="inline"
           inlineCollapsed={this.state.collapsed}
+          
         >
           {
             this.handleMenu()
