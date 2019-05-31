@@ -18,7 +18,7 @@ let menulist = [
       }, 
       {
         path: '/categoryManage',
-        name: '品类管理',
+        name: '分类管理',
         key: '0202',
       }
     ]

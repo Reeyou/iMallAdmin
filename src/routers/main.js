@@ -2,21 +2,19 @@ import React, { Component } from 'react'
 import MainRouters from './Routers'
 import { Switch, Redirect, withRouter, Route } from 'react-router-dom'
 import { Layout, Menu, Icon } from 'antd';
+import getRouters from '../utils/getRouters'
 
 import MenuApp from '../components/Menu' 
 import HeaderApp from '../components/Index/header' 
 
-import Loadable from 'react-loadable' // 动态导入加载组件
-import PageLoading from '../components/PageLoading'
 const { Header, Sider, Content } = Layout;
-const CategoryManage = Loadable({loader: () => import('../container/Product/CategoryManage'), loading: PageLoading, delay: 400})
-const ProductManage = Loadable({loader: () => import('../container/Product/ProductManage'), loading: PageLoading, delay: 400})
 
 export default class mainView extends Component {
   constructor(props) {
     super(props)
     this.state = {
       collapsed: false,
+      routers : []
     };
   }
   toggle = () => {
@@ -24,7 +22,21 @@ export default class mainView extends Component {
       collapsed: !this.state.collapsed,
     });
   };
+  componentWillMount() {
+    this.getResultRouter()
+  }
+  getResultRouter() {
+    let resultRouters = getRouters(MainRouters)
+    this.setState({
+      routers: resultRouters
+    },() => {
+      console.log(this.state.routers)
+    })
+  }
+  
+
   render() {
+    const { routers } = this.state
     const logoStyle = {
       height: "64px",
       background: "rgb(0,0,0)",
@@ -61,27 +73,26 @@ export default class mainView extends Component {
             }}
           >
             <Switch>
-              <Route path='/' component={ProductManage} exact />
               {
-                MainRouters.map(route => {
-                  // return (
-                  //   <Route
-                  //     key={route.key}
-                  //     exact={route.exact ? true : false}
-                  //     path={route.path}
-                  //     component={route.component}
-                  //   />
-                  // )
-                  route.routers ? route.routers.map(routeItem => {
-                    return (
-                      <Route
-                        key={routeItem.key}
-                        exact={routeItem.exact ? true : false}
-                        path={routeItem.path}
-                        component={routeItem.component}
-                      />
-                    )
-                  }) : ''
+                routers.map(route => {
+                  return (
+                    <Route
+                      key={route.key}
+                      exact={route.exact ? true : false}
+                      path={route.path}
+                      component={route.component}
+                    />
+                  )
+                  // route.routers ? route.routers.map(routeItem => {
+                  //   return (
+                  //     <Route
+                  //       key={routeItem.key}
+                  //       exact={routeItem.exact ? true : false}
+                  //       path={routeItem.path}
+                  //       component={routeItem.component}
+                  //     />
+                  //   )
+                  // }) : ''
                 })
               }
             </Switch>

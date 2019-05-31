@@ -49,7 +49,7 @@ const routers = [
     exact: true,
     routers: [
       {
-        path: '/categoryChildList',
+        path: '/categoryManage/categoryChildList',
         name: '分类子列表',
         key: 'categoryChildList',
         component: categoryChildList,

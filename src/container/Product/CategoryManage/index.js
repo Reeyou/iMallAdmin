@@ -53,7 +53,7 @@ class CategoryManage extends Component {
   //
   handleLinkTo(e) {
     // console.log(e.parentId)
-    this.props.history.push(`/categoryList/categoryChildList/?${e.parentId}`)
+    this.props.history.push(`/categoryManage/categoryChildList/?${e.parentId}`)
   }
 
   filters = [

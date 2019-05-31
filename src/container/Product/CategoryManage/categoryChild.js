@@ -132,7 +132,7 @@ class CategoryChildManage extends Component {
     return (
       <div>
         <PageTable
-          title=''
+          title='分类子列表'
           data={this.state.data}
           columns={this.columns}
           filters={this.filters}

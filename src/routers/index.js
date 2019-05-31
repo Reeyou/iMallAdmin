@@ -5,41 +5,43 @@ import PageLoading from '../components/PageLoading'
 import { Switch, Route, Redirect, HashRouter, HashHistory } from 'react-router-dom'
 import MainView from './main'
 import MainRouters from './Routers'
+import getRouters from '../utils/getRouters'
 
 const Index = Loadable({loader: () => import('../container/Index'), loading: PageLoading, delay: 400})
 
 export default class App extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      routers : []
+    }
+  }
+  componentWillMount() {
+    this.getResultRouter()
+  }
+  getResultRouter() {
+    let resultRouters = getRouters(MainRouters)
+    this.setState({
+      routers: resultRouters
+    },() => {
+      console.log(this.state.routers)
+    })
   }
   render() {
+    const { routers } = this.state
     return (
       <HashRouter history={HashHistory}>
         <Switch>
           <Route path='/' component={Index} exact />
           {
-            MainRouters.map(route => {
-              if(route.routers) {
-                return route.routers.map(routeItem => {
-                          return(
-                            <Route
-                              key={routeItem.key}
-                              exact={routeItem.exact ? true : false}
-                              path={routeItem.path}
-                              component={routeItem.component}
-                            />
-                          )
-                        })
-              } else {
-                return (
-                  <Route
-                    key={route.key}
-                    exact={route.exact ? true : false}
-                    path={route.path}
-                    component={route.component}
-                  />
-                )
-              }
+            routers.map(route => {
+              return (
+                <Route 
+                  path={route.path}
+                  component={MainView}
+                  exact={route.exact}
+                />
+              )
             })
           }
         </Switch>
