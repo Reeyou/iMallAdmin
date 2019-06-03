@@ -27,7 +27,6 @@ export default class PageBread extends Component {
     this.setState({
       routers: resultRouters
     },() => {
-      console.log(this.state.routers)
       this.getPath()
     })
   }
@@ -37,14 +36,13 @@ export default class PageBread extends Component {
     this.state.routers.map(item => {
         resultPath.push({
           path: item.path,
+          upperPath: item.upperPath,
           upperName: item.upperName,
           name: item.name
         })
     })
     this.setState({
       routerPath: resultPath
-    },() => {
-      console.log(this.state.routerPath)
     })
   }
 
@@ -52,16 +50,15 @@ export default class PageBread extends Component {
 
   
   render() {
-    const currenPath = window.location.hash.substr(1).split('#')
-    console.log(currenPath)
+    const splitPath = window.location.hash.substr(1).split('?')[0]
+    const currentPath = splitPath.slice(0, splitPath.length - 1)
     //先筛选路径匹配的路由参数，再进行渲染
-    const samePath = this.state.routerPath.filter(item => {
-      item in currenPath
-    })
-    console.log(samePath)
+    console.log(currentPath)
+    console.log(this.state.routerPath)
+    
     const renderBread = this.state.routerPath.map(item => {
         let result = []
-        if(currenPath.indexOf(item.path)) {
+        if(currentPath == item.path) { 
           result.push(
             <Breadcrumb>
               <Breadcrumb.Item>
@@ -69,7 +66,7 @@ export default class PageBread extends Component {
                 <span>首页</span>
               </Breadcrumb.Item>
               <Breadcrumb.Item>
-                <Link to={item.path}>{item.upperName}</Link>
+                <Link to={item.upperPath}>{item.upperName}</Link>
               </Breadcrumb.Item>
               <Breadcrumb.Item>{item.name}</Breadcrumb.Item>
             </Breadcrumb>

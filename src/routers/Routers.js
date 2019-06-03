@@ -43,13 +43,13 @@ const routers = [
   {
     path: '/categoryManage',
     name: '分类列表',
-    upperName: '分类管理',
     key: 'CategoryManage',
     component: CategoryManage,
     exact: true,
     routers: [
       {
         path: '/categoryManage/categoryChildList',
+        upperPath: '/categoryManage',
         upperName: '分类列表',
         name: '分类子列表',
         key: 'categoryChildList',

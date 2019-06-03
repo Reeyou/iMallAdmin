@@ -1,3 +1,4 @@
+import Item from "antd/lib/list/Item";
 
 export default function getRouters(Routers) {
   let resultRouters = []
@@ -6,7 +7,6 @@ export default function getRouters(Routers) {
       key: route.key,
       path: route.path,
       exact: route.exact,
-      upperName: route.upperName,
       name: route.name,
       component: route.component
     })
@@ -15,6 +15,7 @@ export default function getRouters(Routers) {
         resultRouters.push({
           key: routeItem.key,
           path: routeItem.path,
+          upperPath: routeItem.upperPath,
           upperName: routeItem.upperName,
           name: routeItem.name,
           exact: routeItem.exact,
