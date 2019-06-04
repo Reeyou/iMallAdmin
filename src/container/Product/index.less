@@ -1,3 +1,5 @@
+@import '../../assets/css/common.less';
+
 .edit {
   transition: all ease 400ms;
   margin-right: 10px;
@@ -16,13 +18,13 @@
     height: 110px;
   }
 }
-.addProduct {
+.product {
   width: 600px;
   .title {
     h3 {
       font-size: 18px;
       font-weight: 600;
-      padding: 20px 0 10px 28px;
+      padding: @titlePadding;
     }
   }
   .btn {
@@ -45,9 +47,5 @@
   }
   .ant-col {
     display: inline-block;
-  }
-  .ant-form-text {
-    // height: 30px;
-    // background: #ccc;
   }
 }

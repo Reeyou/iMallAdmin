@@ -101,7 +101,7 @@ class EditProduct extends Component {
       </div>
     );
     return (
-      <div className='addProduct'>
+      <div className='product'>
         <div className="title">
           <h3>添加商品</h3>
         </div>
