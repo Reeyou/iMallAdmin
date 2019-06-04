@@ -51,14 +51,22 @@ export default class PageBread extends Component {
   
   render() {
     const splitPath = window.location.hash.substr(1).split('?')[0]
-    const currentPath = splitPath.slice(0, splitPath.length - 1)
+    let currentPath = ''
+    if(splitPath.charAt(splitPath.length - 1) == '/') {
+      currentPath = splitPath.slice(0, splitPath.length - 1)
+    } else if(splitPath.charAt(splitPath.length - 1) != '/') {
+      currentPath = splitPath.slice(0, splitPath.length)
+    }
     //先筛选路径匹配的路由参数，再进行渲染
+    console.log(111)
+    // console.log(splitPath.charAt(splitPath.length - 1))
+    // console.log(splitPath.length - 1)
     console.log(currentPath)
     console.log(this.state.routerPath)
     
     const renderBread = this.state.routerPath.map(item => {
         let result = []
-        if(currentPath == item.path) { 
+        if(currentPath == item.path && item.upperName !== undefined) { 
           result.push(
             <Breadcrumb>
               <Breadcrumb.Item>

@@ -4,7 +4,7 @@ import { Menu, Button , Icon } from 'antd';
 import './index.less'
 import { observer, inject } from 'mobx-react'
 import logo from '@/assets/img/logo.png'
-import menulist from '@/routers/RouterMenu'
+import menulist from '@/routers/Menu'
 
 const SubMenu = Menu.SubMenu;
 

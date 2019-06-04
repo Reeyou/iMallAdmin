@@ -7,7 +7,7 @@ import Header from '@/components/Index/header'
 import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
 import PageBread from '@/components/PageBread'
-import { Divider, Tag, Button } from 'antd';
+import { Select, InputNumber, Button, Modal, Form, Input, Upload, Icon, message } from 'antd';
 import  { 
   getProductList,
   addOrUpdateProduct,
@@ -16,6 +16,7 @@ import  {
  } from '@/services/productApi'
  import '../index.less'
 
+ const confirm = Modal.confirm
  const statusList = ["上架中", "已下架"]
 class ProductManage extends Component {
   constructor(props) {
@@ -23,7 +24,17 @@ class ProductManage extends Component {
     this.state = {
       pageNum: 1,
       pageSize: 10,
-      data: []
+      data: [],
+      previewVisible: false,
+      previewImage: '',
+      fileList: [
+        {
+          uid: '-1',
+          name: 'xxx.png',
+          status: 'done',
+          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        },
+      ],
     }
   }
   componentWillMount() {
@@ -45,15 +56,43 @@ class ProductManage extends Component {
       }
     })
   }
-  //
+  //添加商品
   addProduct = () => {
-    addOrUpdateProduct().then(res => {
-      if(res.status == 0) {
-        console.log(111)
-        console.log(res.data)
-      }
+    this.props.history.push('/productManage/addProduct')
+    
+  }
+  //删除商品
+  handleDelete = () => {
+    confirm({
+      title: '删除商品',
+      content: '是否删除该商品？',
+      cancelText: '取消',
+      okText: '确认',
+      onOk() {
+        
+      },
+      onCancel() {},
     })
   }
+  //
+  getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+  }
+
+  handlePreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewImage: file.url || file.preview,
+      previewVisible: true,
+    });
+  };
+
+  handleChange = ({ fileList }) => this.setState({ fileList });
   filters = [
     {
       name: '商品名称',
@@ -139,15 +178,31 @@ class ProductManage extends Component {
       render: () => {
         return (
           <div>
-            <Button type="primary" className="edit">查看</Button>
-            <Button type="dashed" className="edit">编辑</Button>
-            <Button type="danger" className="edit edit_right">删除</Button>
+            <Button type="primary" className="edit" onClick={() => this.props.history.push('/productManage/lookProduct')}>查看</Button>
+            <Button type="dashed" className="edit" onClick={() => this.props.history.push('/productManage/editProduct')}>编辑</Button>
+            <Button type="danger" className="edit edit_right" onClick={() => this.handleDelete()}>删除</Button>
           </div>
         )
       }
     },
   ]; 
   render() {
+    const { previewVisible, previewImage, fileList } = this.state;
+    const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        sm: { span: 5 },
+      },
+      wrapperCol: {
+        sm: { span: 18 },
+      },
+    };
+    const uploadButton = (
+      <div>
+        <Icon type={this.state.loading ? 'loading' : 'plus'} />
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    );
     return (
       <div>
         <PageTable
@@ -164,4 +219,5 @@ class ProductManage extends Component {
     )
   }
 }
-export default ProductManage;
+const ProductManageForm = Form.create()(ProductManage)
+export default ProductManageForm;

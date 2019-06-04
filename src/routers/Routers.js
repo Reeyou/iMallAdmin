@@ -3,7 +3,14 @@ import Loadable from 'react-loadable'
 
 const Index = Loadable({loader: () => import('../container/Index'), loading: PageLoading, delay: 400})
 const Home = Loadable({loader: () => import('../container/Home'), loading: PageLoading, delay: 400})
+
+//商品信息
 const ProductManage = Loadable({loader: () => import('../container/Product/ProductManage'), loading: PageLoading, delay: 400})
+const AddProduct = Loadable({loader: () => import('../container/Product/ProductManage/addProduct'), loading: PageLoading, delay: 400})
+const EditProduct = Loadable({loader: () => import('../container/Product/ProductManage/editProduct'), loading: PageLoading, delay: 400})
+const LookProduct = Loadable({loader: () => import('../container/Product/ProductManage/lookProduct'), loading: PageLoading, delay: 400})
+
+//分类信息
 const CategoryManage = Loadable({loader: () => import('../container/Product/CategoryManage'), loading: PageLoading, delay: 400})
 const categoryChildList = Loadable({loader: () => import('../container/Product/CategoryManage/categoryChild'), loading: PageLoading, delay: 400})
 
@@ -26,19 +33,38 @@ const routers = [
   {
     path: '/productManage',
     name: '商品列表',
-    upperName: '商品管理',
     key: 'ProductManage',
     component: ProductManage,
     exact: true,
-    // routers: [
-    //   {
-        // path: '/ProductManage',
-        // name: '商品列表',
-        // key: 'ProductManage',
-        // component: ProductManage,
-        // exact: true,
-      // }
-    // ]
+    routers: [
+      {
+        path: '/productManage/addProduct',
+        upperPath: '/productManage',
+        upperName: '商品列表',
+        name: '添加商品',
+        key: 'AddProduct',
+        component: AddProduct,
+        exact: true,
+      },
+      {
+        path: '/productManage/editProduct',
+        upperPath: '/productManage',
+        upperName: '商品列表',
+        name: '编辑商品',
+        key: 'EditProduct',
+        component: EditProduct,
+        exact: true,
+      },
+      {
+        path: '/productManage/lookProduct',
+        upperPath: '/productManage',
+        upperName: '商品列表',
+        name: '查看商品',
+        key: 'LookProduct',
+        component: LookProduct,
+        exact: true,
+      }
+    ]
   },
   {
     path: '/categoryManage',
