@@ -9,3 +9,8 @@ export async function getUserLogin(params) {
 export async function getUserInfo(params) {
   return request("GET", "api/admin/getUserInfo", params)
 }
+
+// 重置密码
+export async function resetPwd(params) {
+  return request("POST", "api/admin/resetPwd", params)
+}

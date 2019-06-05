@@ -4,12 +4,14 @@
 **/
 
 import React, { Component } from 'react'
-import { Button, Modal, Form, Input } from 'antd';
-import  { getUserInfo } from '@/services/userApi'
+import { Button, Modal, Form, Input, message } from 'antd';
+import  { getUserInfo, resetPwd } from '@/services/userApi'
+import {withRouter} from "react-router-dom";
 import './index.less'
 
 const confirm = Modal.confirm
 const statusList = ["上架中", "已下架"]
+@withRouter
 class adminSafe extends Component {
   constructor(props) {
     super(props)
@@ -19,12 +21,28 @@ class adminSafe extends Component {
     }
   }
   componentWillMount() {
-    this.updatePassword()
+    // this.updatePassword()
   }
   //修改密码
   updatePassword = () => {
-    getUserInfo().then(res => {
-      console.log(111)
+    
+    this.props.form.validateFields((err, values) => {
+      if(err) {
+
+      } else {
+        const params = {
+          password: values.prePassword,
+          newPassword: values.newPassword
+        }
+        resetPwd(params).then(res => {
+          if(res.status == 0) {
+            message.success(res.msg)
+            this.props.history.push('/')
+          } else if (res.status == 1) {
+            message.error(res.msg)
+          }
+        })
+      }
     })
   }
 
@@ -41,15 +59,54 @@ class adminSafe extends Component {
           </div>
           <div className='account_right_subtitle'>原登录密码</div>
           <div className='input_wrap'>
-            <Input readOnly />
+          <Form.Item>
+            {
+              getFieldDecorator('prePassword', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入原密码'
+                  }
+                ]
+              })(
+                <Input type='password' placeholder='请输入原密码' />
+              )
+            }
+          </Form.Item>
           </div>
           <div className='account_right_subtitle'>新密码</div>
           <div className='input_wrap'>
-            <Input readOnly  />
+          <Form.Item>
+            {
+              getFieldDecorator('newPassword', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入新密码'
+                  }
+                ]
+              })(
+                <Input type='password' placeholder='请输入新密码' />
+              )
+            }
+          </Form.Item>
           </div>
           <div className='account_right_subtitle'>确认密码</div>
           <div className='input_wrap'>
-            <Input readOnly  />
+          <Form.Item>
+            {
+              getFieldDecorator('newPasswordConfirm', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请确认密码'
+                  }
+                ]
+              })(
+                <Input type='password' placeholder='请确认密码' />
+              )
+            }
+          </Form.Item>
           </div>
           <Button loading={this.state.loading} onClick={() => this.updatePassword()} type='primary'>修改密码</Button>
         </div>

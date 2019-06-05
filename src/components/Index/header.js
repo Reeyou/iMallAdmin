@@ -1,17 +1,26 @@
 import React, {Component} from 'react'
 import { Menu, Dropdown, Icon } from 'antd';
+import { withRouter } from 'react-router-dom'
+import avatar from './Avatar.png'
 import './index.less'
 
+@withRouter
 export default class HeaderApp extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      userName: 'Admin'
+    }
   }
   loginOut = () => {
-    window.location.href = '/'
+    this.props.history.push('/')
   }
   handleUser = () => {
-    // this.props.history.push('/userInfo')
-    window.location.href = '/#/userInfo'
+    this.props.history.push('/userInfo')
+  }
+  handleImg = () => {
+    console.log(111)
+    this.props.history.push('/userInfo')
   }
   render() {
     const menu = (
@@ -31,11 +40,13 @@ export default class HeaderApp extends Component {
         <div className='header'>
           <div className="container clearFix">
             <div className="user">
-              <img src="" alt=""/>
+              <div className='img' onClick={this.handleImg}>
+                <img src={avatar} alt=""/>
+              </div>
               <div className='info'>
                 <Dropdown overlay={menu} placement="bottomCenter">
                   <i className="ant-dropdown-link">
-                    Reeyou <Icon type="down" />
+                    <span style={{color: 'rgba(0,0,0,.65)'}}>{this.state.userName}</span> <Icon type="down" />
                   </i>
                 </Dropdown>
               </div>

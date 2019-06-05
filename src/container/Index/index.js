@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import {observer, inject} from 'mobx-react'
 import BgCanvas from './bgCanvas'
 import Footer from '@/components/Index/footer'
-import { Form } from 'antd'
+import { Form, message } from 'antd'
 import './index.less'
 import  { getUserLogin } from '@/services/userApi'
 
@@ -38,6 +38,8 @@ class Index extends Component {
             this.setState({
               data: res.data
             })
+          } else if(res.status == 1) {
+            message.error(res.msg)
           }
         })
       }

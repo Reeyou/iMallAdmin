@@ -20,8 +20,24 @@
    height: 100%;
   .user {
     float: right;
-    height: 60px;
+    height: 64px;
     line-height: 60px;
+    .img {
+      display: inline-block;
+      vertical-align: top;
+      line-height: 64px;
+      padding: 0 16px;
+      transition: all 400ms ease-in-out;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.88;
+      }
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      }
+    }
     .info {
       height: 100%;
       display: inline-block;

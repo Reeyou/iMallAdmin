@@ -14,13 +14,17 @@ module.exports = {
   mode: 'development',
   // devtool: 'source-map',
   //实现浏览器自动刷新需要添加
-  entry: ['webpack-hot-middleware/client?noInfo=true&reload=true', "./src/index"],
+  entry: ['webpack-hot-middleware/client?noInfo=true&reload=true', SRC],
   output: {
     path: path.resolve(__dirname, 'dist'), // 路径名
     filename: 'development' ? 'js/[name].js' : 'js/[name].[chunkhash:5].js', // 打包名称
     publicPath: '/',
   },
   resolve: {
+    modules: [
+      'src',
+      'node_modules',
+    ],
     alias: {
       '@': SRC
     },
@@ -57,7 +61,7 @@ module.exports = {
         ] 
       },
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif|svg|ico)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
@@ -79,7 +83,7 @@ module.exports = {
       filename: './index.html',
       inject: true,
       chunksSortMode: "none",
-      // favicon: path.resolve('favicon.ico'),
+      favicon: path.resolve('favicon.ico'),
       minify: {
           collapseWhitespace: true,
       }

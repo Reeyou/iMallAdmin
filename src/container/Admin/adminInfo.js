@@ -6,6 +6,7 @@
 import React, { Component } from 'react'
 import { Select, InputNumber, Button, Modal, Form, Input, Upload, Icon, message } from 'antd';
 import  { getUserInfo } from '@/services/userApi'
+import avatar from '@/assets/img/defaultAvatar.png'
 import styles from './index.less'
 
 const confirm = Modal.confirm
@@ -46,7 +47,7 @@ class AdminInfo extends Component {
           </div>
           <div className='account_right_subtitle'>头像</div>
           <div className='avatar'>
-             {/* <img src={avatar} />  */}
+             <img src={avatar} /> 
           </div>
           <div className='account_right_subtitle'>角色</div>
           <div className='input_wrap'>
