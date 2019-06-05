@@ -58,12 +58,6 @@ export default class PageBread extends Component {
       currentPath = splitPath.slice(0, splitPath.length)
     }
     //先筛选路径匹配的路由参数，再进行渲染
-    console.log(111)
-    // console.log(splitPath.charAt(splitPath.length - 1))
-    // console.log(splitPath.length - 1)
-    console.log(currentPath)
-    console.log(this.state.routerPath)
-    
     const renderBread = this.state.routerPath.map(item => {
         let result = []
         if(currentPath == item.path && item.upperName !== undefined) { 

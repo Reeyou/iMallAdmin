@@ -22,12 +22,22 @@ const AuthManage = Loadable({loader: () => import('../container/SystemManage/Aut
 const MessageManage = Loadable({loader: () => import('../container/SystemManage/MessageManage'), loading: PageLoading, delay: 400})
 const LogManage = Loadable({loader: () => import('../container/SystemManage/LogManage'), loading: PageLoading, delay: 400})
 
+//
+const Admin = Loadable({loader: () => import('../container/Admin'), loading: PageLoading, delay: 400})
+
 const routers = [
   {
     path: '/Home',
     name: '首页',
     key: '',
     component: Home,
+    exact: true
+  },
+  {
+    path: '/Admin',
+    name: '管理员中心',
+    key: 'Admin',
+    component: Admin,
     exact: true
   },
   {

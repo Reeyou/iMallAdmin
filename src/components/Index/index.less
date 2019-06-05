@@ -25,9 +25,22 @@
     .info {
       height: 100%;
       display: inline-block;
-      a {
+      .ant-dropdown-open {
+        top: 64px;
+      }
+      .ant-dropdown-menu-item {
+        padding: 12px 18px;
+      }
+      i {
         font-size: 14px;
+        font-style: normal;
         color: @iBlack;
+        &:hover {
+          height: 64px;
+          cursor: pointer;
+          transition: all 0.3s, padding 0s;
+          padding: 21px 0;
+        }
       }
     }
     .message, .skin {

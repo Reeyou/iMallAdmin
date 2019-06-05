@@ -1,22 +1,26 @@
 import React, {Component} from 'react'
-import { Menu, Dropdown, Icon, Layout } from 'antd';
+import { Menu, Dropdown, Icon } from 'antd';
 import './index.less'
 
-const { Header, Sider, Content } = Layout;
 export default class HeaderApp extends Component {
   constructor(props) {
     super(props)
   }
+  loginOut = () => {
+    window.location.href = '/'
+  }
+  handleUser = () => {
+    // this.props.history.push('/userInfo')
+    window.location.href = '/#/userInfo'
+  }
   render() {
     const menu = (
       <Menu>
-        <Menu.Item key="0">
-          <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
+        <Menu.Item key="0" onClick={this.handleUser}>
             个人信息
-          </a>
         </Menu.Item>
         <Menu.Divider />
-        <Menu.Item key="3">
+        <Menu.Item key="3" onClick={this.loginOut}>
           退出登录
         </Menu.Item>
       </Menu>
@@ -28,9 +32,9 @@ export default class HeaderApp extends Component {
               <img src="" alt=""/>
               <div className='info'>
                 <Dropdown overlay={menu}>
-                  <a className="ant-dropdown-link" href="#">
+                  <i className="ant-dropdown-link">
                     Reeyou <Icon type="down" />
-                  </a>
+                  </i>
                 </Dropdown>
               </div>
               <div className="message">

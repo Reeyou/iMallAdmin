@@ -8,7 +8,7 @@ import BgCanvas from './bgCanvas'
 import Footer from '@/components/Index/footer'
 import { Form } from 'antd'
 import './index.less'
-import  { getUserLogin } from '@/services/accountApi'
+import  { getUserLogin } from '@/services/userApi'
 
 @inject('Global')
 @observer

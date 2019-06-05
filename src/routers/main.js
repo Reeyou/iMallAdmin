@@ -83,16 +83,6 @@ export default class mainView extends Component {
                       component={route.component}
                     />
                   )
-                  // route.routers ? route.routers.map(routeItem => {
-                  //   return (
-                  //     <Route
-                  //       key={routeItem.key}
-                  //       exact={routeItem.exact ? true : false}
-                  //       path={routeItem.path}
-                  //       component={routeItem.component}
-                  //     />
-                  //   )
-                  // }) : ''
                 })
               }
             </Switch>
