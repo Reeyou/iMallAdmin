@@ -6,7 +6,7 @@
 import React, { Component } from 'react'
 import { Select, InputNumber, Button, Modal, Form, Input, Upload, Icon, message } from 'antd';
 import  { getUserInfo } from '@/services/userApi'
-import './index.less'
+import styles from './index.less'
 
 const confirm = Modal.confirm
 const statusList = ["上架中", "已下架"]
@@ -15,24 +15,21 @@ class AdminInfo extends Component {
     super(props)
     this.state = {
       data: [],
-      previewImage: '',
-      fileList: [
-        {
-          uid: '-1',
-          name: 'xxx.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-      ],
     }
   }
   componentWillMount() {
     this.getUserInfo()
   }
-  //
+  //获取个人信息
   getUserInfo = () => {
     getUserInfo().then(res => {
-      console.log(111)
+      if(res.status == 0) {
+        this.setState({
+          data: res.data
+        })
+      } else {
+        console.log('请求错误')
+      }
     })
   }
 
@@ -40,81 +37,34 @@ class AdminInfo extends Component {
 
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
-    const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        sm: { span: 18 },
-      },
-    };
-    const formSmItemLayout = {
-      labelCol: {
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        sm: { span: 12 },
-      },
-    };
-    const { Option } = Select
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
+    const { data } = this.state
     return (
-      <div className='userInfo'>
-        <div className="title">
-          <h3>个人信息</h3>
-        </div>
-        <Form>
-          <Form.Item
-            label='头像'
-            {...formItemLayout}
-          >
-            {getFieldDecorator('avatar', {
-              rules: []
-            })(
-              <Input style={{width: '100%'}} />
-            )}
-          </Form.Item>
-          <Form.Item
-            label='用户名'
-            {...formItemLayout}
-          >
-            {getFieldDecorator('nickName', {
-              rules: []
-            })(
-              <Input style={{width: '100%'}} />
-            )}
-          </Form.Item>
-          <Form.Item
-            label='手机号码'
-            {...formItemLayout}
-          >
-            {getFieldDecorator('nickMobile', {
-              rules: []
-            })(
-              <Input style={{width: '100%'}} />
-            )}
-          </Form.Item>
-          <Form.Item
-            {...formSmItemLayout}
-            label='角色'
-          >
-            {getFieldDecorator('role', {
-              rules: []
-            })(
-              <InputNumber style={{width: '40%'}} />
-            )}
-            <span className="ant-form-text">元</span>
-          </Form.Item>
-        </Form>
-        <div className='btn'>
-          <Button onClick={this.handleAddOk} type='primary'>添加</Button>
+      <div className='account_right'>
+        <div className='account_right_body'>
+          <div className='account_right_title'>
+            <span>基本设置</span>
+          </div>
+          <div className='account_right_subtitle'>头像</div>
+          <div className='avatar'>
+             {/* <img src={avatar} />  */}
+          </div>
+          <div className='account_right_subtitle'>角色</div>
+          <div className='input_wrap'>
+            <Input readOnly value={data.role === 1 ? '管理员' : '普通用户'} />
+          </div>
+          <div className='account_right_subtitle'>用户名</div>
+          <div className='input_wrap'>
+            <Input readOnly value={data.username}/>
+          </div>
+          <div className='account_right_subtitle'>手机号码</div>
+          <div className='input_wrap'>
+            <Input readOnly value={data.phone} />
+          </div>
+          <div className='account_right_subtitle'>邮箱</div>
+          <div className='input_wrap'>
+            <Input readOnly value={data.email} />
+          </div>
+          {/* <Button loading={this.state.loading} onClick={() => this.handleUpdateUserInfo()} type='primary'>更新基本信息</Button> */}
         </div>
       </div>
     )

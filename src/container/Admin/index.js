@@ -4,121 +4,40 @@
 **/
 
 import React, { Component } from 'react'
-import { Select, InputNumber, Button, Modal, Form, Input, Upload, Icon, message } from 'antd';
-import  { getUserInfo } from '@/services/userApi'
+import AdminInfo from './adminInfo'
+import AdminSafe from './adminSafe'
 import './index.less'
 
-const confirm = Modal.confirm
-const statusList = ["上架中", "已下架"]
-class UserInfo extends Component {
+class Index extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [],
-      previewImage: '',
-      fileList: [
-        {
-          uid: '-1',
-          name: 'xxx.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-      ],
+      currentTab: 'info'
     }
   }
-  componentWillMount() {
-    this.getUserInfo()
-  }
-  //
-  getUserInfo = () => {
-    getUserInfo().then(res => {
-      console.log(111)
+  changeSelectTab(tab) {
+    this.setState({
+      currentTab: tab
     })
   }
-
-
-
-
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
-    const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        sm: { span: 18 },
-      },
-    };
-    const formSmItemLayout = {
-      labelCol: {
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        sm: { span: 12 },
-      },
-    };
-    const { Option } = Select
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
+    const { currentTab } = this.state
     return (
-      <div className='userInfo'>
-        <div className="title">
-          <h3>个人信息</h3>
+      <div className='account_wrap'>
+        <div className='account_left'>
+          <div className='account_left_body'>
+            <div className={currentTab == 'info' ? 'selectItem active' : 'selectItem'} onClick={() => this.changeSelectTab('info')}>基本设置</div>
+            <div className={currentTab == 'safe' ? 'selectItem active' : 'selectItem'} onClick={() => this.changeSelectTab('safe')}>登录密码</div>
+          </div>
         </div>
-        <Form>
-          <Form.Item
-            label='头像'
-            {...formItemLayout}
-          >
-            {getFieldDecorator('avatar', {
-              rules: []
-            })(
-              <Input style={{width: '100%'}} />
-            )}
-          </Form.Item>
-          <Form.Item
-            label='用户名'
-            {...formItemLayout}
-          >
-            {getFieldDecorator('nickName', {
-              rules: []
-            })(
-              <Input style={{width: '100%'}} />
-            )}
-          </Form.Item>
-          <Form.Item
-            label='手机号码'
-            {...formItemLayout}
-          >
-            {getFieldDecorator('nickMobile', {
-              rules: []
-            })(
-              <Input style={{width: '100%'}} />
-            )}
-          </Form.Item>
-          <Form.Item
-            {...formSmItemLayout}
-            label='角色'
-          >
-            {getFieldDecorator('role', {
-              rules: []
-            })(
-              <InputNumber style={{width: '40%'}} />
-            )}
-            <span className="ant-form-text">元</span>
-          </Form.Item>
-        </Form>
-        <div className='btn'>
-          <Button onClick={this.handleAddOk} type='primary'>添加</Button>
-        </div>
+        {
+          currentTab == 'info' && <AdminInfo />
+        }
+        {
+          currentTab == 'safe' && <AdminSafe />
+        }
       </div>
     )
   }
 }
-const UserInfoForm = Form.create()(UserInfo)
-export default UserInfoForm;
+export default Index;

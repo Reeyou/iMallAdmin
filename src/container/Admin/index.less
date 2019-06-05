@@ -1,32 +1,90 @@
 @import '../../assets/css/common.less';
-.userInfo {
-  width: 600px;
-  .title {
-    h3 {
-      font-size: 18px;
-      font-weight: 600;
-      padding: @titlePadding;
+.account_wrap{
+  display: flex;
+  background: #FFF;
+  flex-direction: row;
+  margin: 0 24px;
+  .account_left{
+    padding: 20px 0 48px 0;
+    width: 220px;
+    .account_left_body{
+      border-right: 1px solid #E8E8E8;
+      height: 100%;
+      .selectItem{
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        color: #8C8C8C;
+        font-size: 13px;
+        padding-left: 24px;
+        cursor: pointer;
+        &.active {
+          color: #1890FF;
+          background:rgba(230,247,255,1);
+        }
+      }
     }
   }
-  .btn {
-    width: 100%;
-    text-align: center;
-  }
-  .ant-btn {
-    padding: 0px 48px;
-    margin: 10px 28px 0;
-  }
-  .ant-form-item-label {
-    text-align: left;
-  }
-  .ant-form {
-    padding: 0 28px 0;
-  }
-  
-  .ant-form-item label {
-    display: inline-block;
-  }
-  .ant-col {
-    display: inline-block;
+  .account_right{
+    padding: 20px 0 48px 40px;
+    .account_right_body{
+      .account_right_title{
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+      }
+      .account_right_subtitle{
+        font-size: 14px;
+        margin-top: 20px;
+      }
+      .avatar{
+        width: 144px;
+        height: 144px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-top: 12px;
+        margin-bottom: 10px;
+
+        & > img{
+          width: 144px;
+          height: 144px;
+        }
+      }
+      .telphone{
+        padding-left: 8px;
+      }
+      .input_wrap{
+        width: 310px;
+        margin-top: 11px;
+        margin-bottom: 36px;
+      }
+      .idcard_wrap{
+        width: 310px;
+        margin-bottom: 40px;
+        .idcard_item{
+          display: inline-block;
+          &.fr{
+            float: right;
+          }
+          .idcard_item_title{
+            font-size: 14px;
+            margin-bottom: 12px;
+          }
+          .uploadText{
+            font-size: 12px;
+          }
+          :global {
+            .idcard-uploader .ant-upload.ant-upload-select-picture-card{
+              width: 120px;
+              height: 80px;
+              background: #FFF;
+            }
+            .ant-upload.ant-upload-select-picture-card > .ant-upload{
+              padding: 0;
+            }
+          }
+        }
+      }
+    }
   }
 }

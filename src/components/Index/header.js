@@ -17,10 +17,12 @@ export default class HeaderApp extends Component {
     const menu = (
       <Menu>
         <Menu.Item key="0" onClick={this.handleUser}>
-            个人信息
+          <Icon type="user" />
+          个人信息
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="3" onClick={this.loginOut}>
+          <Icon type="logout" />
           退出登录
         </Menu.Item>
       </Menu>
@@ -31,7 +33,7 @@ export default class HeaderApp extends Component {
             <div className="user">
               <img src="" alt=""/>
               <div className='info'>
-                <Dropdown overlay={menu}>
+                <Dropdown overlay={menu} placement="bottomCenter">
                   <i className="ant-dropdown-link">
                     Reeyou <Icon type="down" />
                   </i>

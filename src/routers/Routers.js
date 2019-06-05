@@ -34,7 +34,7 @@ const routers = [
     exact: true
   },
   {
-    path: '/Admin',
+    path: '/userInfo',
     name: '管理员中心',
     key: 'Admin',
     component: Admin,
