@@ -101,7 +101,12 @@ class adminSafe extends Component {
                     required: true,
                     message: '请确认密码'
                   }
-                ]
+                ],
+                onChange: (e) => {
+                  if (e.target.value !== this.props.form.getFieldValue('newPassword')) {
+                    message.error('密码输入不一致!')
+                  }
+                }
               })(
                 <Input type='password' placeholder='请确认密码' />
               )

@@ -4,15 +4,10 @@
 **/
 
 import React, { Component } from 'react'
-import Header from '@/components/Index/header'
-import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
 import { Button, Tag } from 'antd';
 import  { 
-  getProductList,
-  addOrUpdateProduct,
-  getProductDetail,
-  updateProductStatus
+  getProductList
  } from '@/services/productApi'
  import '@/assets/css/global.less'
 

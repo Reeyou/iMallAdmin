@@ -35,6 +35,7 @@ export default class App extends Component {
             routers.map(route => {
               return (
                 <Route 
+                  key={route.key}
                   path={route.path}
                   component={MainView}
                   exact={route.exact}

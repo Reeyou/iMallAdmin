@@ -3,22 +3,21 @@
   @Params: 商品管理 
 **/
 import React, { Component } from 'react'
-import { Select, InputNumber, Button, Modal, Form, Input, Upload, Icon, message } from 'antd';
+import { Select, InputNumber, Button, Form, Input, Upload, Icon, message } from 'antd';
 import  { 
-  getProductList,
   addOrUpdateProduct,
-  getProductDetail,
-  updateProductStatus
+  getCategoryList,
+  getCategoryChildrenList
  } from '@/services/productApi'
  import '../index.less'
 
- const confirm = Modal.confirm
- const statusList = ["上架中", "已下架"]
 class AddProduct extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [],
+      categoryData: [],
+      categoryChildData: [],
+      childStatus: false,
       previewImage: '',
       fileList: [
         {
@@ -31,30 +30,69 @@ class AddProduct extends Component {
     }
   }
   componentWillMount() {
-
+    this.getCategoryData()
   }
-
+  // 总品类选择
+  getCategoryData() {
+    getCategoryList().then(res => {
+      if(res.status == 0) {
+        this.setState({
+          categoryData: res.data.list
+        })
+      }
+    })
+  }
+  // 分类选择
+  handleChangeCategory(id) {
+    const params = {
+      parentId: id
+    }
+    getCategoryChildrenList(params).then(res => {
+      this.setState({
+        childStatus: true,
+        categoryChildData: res.data.list
+      })
+    })
+  }
+  // 子分类选择
+  handleChangeCategoryChild(value) {
+    this.setState({
+      childId: value.split('-')[0],
+      categoryName: value.split('-')[1]
+    })
+  }
   //添加商品
   handleAddOk = () => {
-    confirm({
-      title: `添加商品?`,
-      content: `是否添加该商品?`,
-      cancelText: '取消',
-      okText: '确认',
-      onOk() {
-        addOrUpdateProduct().then(res => {
+    this.props.form.validateFields((err, values) => {
+      if(err) {
+
+      } else {
+        const params = {
+          categoryId: this.state.childId,
+          categoryName: this.state.categoryName,
+          name: values.name,
+          // desc: values.productDesc,
+          stock: values.stock,
+          price: values.price,
+
+        }
+        addOrUpdateProduct(params).then(res => {
           if(res.status == 0) {
-            console.log(111)
-            console.log(res.data)
+            message.success(res.msg)
+            setInterval(() => {
+              this.props.history.push('/productManage')
+            }, 1000)
           }
         })
-      },
-      onCancel() {
-        // console.log('Cancel');
-      },
+      }
     })
-    
+  } 
+  // 添加取消
+  handleAddCancel = () => {
+
   }
+
+  
 
   //
   getBase64(img, callback) {
@@ -77,8 +115,9 @@ class AddProduct extends Component {
   handleChange = ({ fileList }) => this.setState({ fileList });
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { categoryData, categoryChildData, fileList } = this.state;
     const { getFieldDecorator } = this.props.form;
+    console.log(categoryData[0])
     const formItemLayout = {
       labelCol: {
         sm: { span: 4 },
@@ -112,8 +151,11 @@ class AddProduct extends Component {
             label='商品名称'
             {...formItemLayout}
           >
-            {getFieldDecorator('productName', {
-              rules: []
+            {getFieldDecorator('name', {
+              rules: [{
+                required: true,
+                message: '请输入商品名称'
+              }]
             })(
               <Input style={{width: '100%'}} />
             )}
@@ -122,8 +164,11 @@ class AddProduct extends Component {
             label='商品描述'
             {...formItemLayout}
           >
-            {getFieldDecorator('productDesc', {
-              rules: []
+            {getFieldDecorator('desc', {
+              rules: [{
+                required: true,
+                message: '请输入商品描述'
+              }]
             })(
               <Input style={{width: '100%'}} />
             )}
@@ -132,8 +177,11 @@ class AddProduct extends Component {
             {...formSmItemLayout}
             label='商品价格'
           >
-            {getFieldDecorator('productPrice', {
-              rules: []
+            {getFieldDecorator('price', {
+              rules: [{
+                required: true,
+                message: '请输入商品价格'
+              }]
             })(
               <InputNumber style={{width: '40%'}} />
             )}
@@ -143,8 +191,11 @@ class AddProduct extends Component {
             {...formSmItemLayout}
             label='商品库存'
           >
-            {getFieldDecorator('productStock', {
-              rules: []
+            {getFieldDecorator('stock', {
+              rules: [{
+                required: true,
+                message: '请输入商品库存'
+              }]
             })(
               <InputNumber style={{width: '40%'}} />
             )}
@@ -152,26 +203,53 @@ class AddProduct extends Component {
           </Form.Item>
           <Form.Item
             label='商品分类'
-            {...formSmItemLayout}
+            {...formItemLayout}
           >
-            {getFieldDecorator('productLevel', {
-              rules: []
+            {getFieldDecorator('categoryName', {
+              rules: [{
+                required: true,
+                message: '请选择商品分类'
+              }],
             })(
-              <Select>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="disabled" disabled>
-                  Disabled
-                </Option>
+              <Select
+                placeholder="请选择分类"
+                style={{width: '47%', display: 'inline-block'}}
+                onChange={(id) => this.handleChangeCategory(id)}
+              >
+                {
+                  categoryData.map((item,index) => {
+                    return <Option key={index} value={item.id}>{item.name}</Option>
+                  })
+                }
               </Select>
             )}
+            {
+              this.state.childStatus ? 
+              (
+              
+                <Select
+                  placeholder="请选择子分类"
+                  onChange={(value) => this.handleChangeCategoryChild(value)}
+                  style={{width: '47%', display: 'inline-block', marginLeft: '20px'}}
+                >
+                  {
+                    categoryChildData.map((item,index) => {
+                      return <Option key={index} value={`${item.id}-${item.name}`}>{item.name}</Option>
+                    })
+                  }
+                </Select>
+              
+            ) : ''}
           </Form.Item>
           <Form.Item
             label='上传图片'
             {...formItemLayout}
           >
             {getFieldDecorator('productImg', {
-              rules: []
+              rules: [{
+                required: true,
+                message: '请上传商品图片'
+              }]
             })(
               <Upload
                 action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
@@ -187,6 +265,7 @@ class AddProduct extends Component {
         </Form>
         <div className='btn'>
           <Button onClick={this.handleAddOk} type='primary'>添加</Button>
+          <Button onClick={this.handleAddCancel}>取消</Button>
         </div>
       </div>
     )

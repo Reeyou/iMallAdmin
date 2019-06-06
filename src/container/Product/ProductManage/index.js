@@ -3,11 +3,9 @@
   @Params: 商品管理 
 **/
 import React, { Component } from 'react'
-import Header from '@/components/Index/header'
-import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
-import PageBread from '@/components/PageBread'
-import { Select, InputNumber, Button, Modal, Form, Input, Upload, Icon, message } from 'antd';
+import moment from 'moment'
+import { Button, Modal, Form, Icon } from 'antd';
 import  { 
   getProductList,
   addOrUpdateProduct,
@@ -17,7 +15,7 @@ import  {
  import '../index.less'
 
  const confirm = Modal.confirm
- const statusList = ["上架中", "已下架"]
+ const statusList = ["销售中", "已下架"]
 class ProductManage extends Component {
   constructor(props) {
     super(props)
@@ -152,12 +150,12 @@ class ProductManage extends Component {
       key: 'img',
     },
     {
-      title: '商品分类',
-      dataIndex: 'level',
-      key: 'level',
+      title: '所属分类',
+      dataIndex: 'categoryName',
+      key: 'categoryName',
     },
     {
-      title: '价格',
+      title: '价格(元)',
       dataIndex: 'price',
       key: 'price',
     },
@@ -172,6 +170,14 @@ class ProductManage extends Component {
           </div>
         )
       }
+    },
+    {
+      title: '添加时间',
+      dataIndex: 'updateTime',
+      key: 'updateTime',
+      render: (time) => (
+          <span>{moment(time).format("YYYY-MM-DD HH:mm:ss")}</span>
+      )
     },
     {
       title: '操作',

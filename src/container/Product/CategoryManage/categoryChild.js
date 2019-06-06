@@ -13,21 +13,17 @@ import {
 } from 'antd';
 import  { 
   getCategoryChildrenList,
-  addOrUpdateProduct,
-  getProductDetail,
-  updateProductStatus
  } from '@/services/productApi'
+ import moment from 'moment'
  import '../index.less'
 
  const confirm = Modal.confirm
- const statusList = ["上架中", "已下架"]
+ const statusList = ["正常", "已废弃"]
  const levelList = ["一级","二级"]
 class CategoryChildManage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      pageNum: 1,
-      pageSize: 10,
       data: [],
       addVisible: false,
       editVisible: false
@@ -41,16 +37,12 @@ class CategoryChildManage extends Component {
   getData() {
     const parentId = this.props.location.search.split('?')[1]
     const params = {
-      pageNum: this.state.pageNum,
-      pageSize: this.state.pageSize,
       parentId: parentId
     }
     getCategoryChildrenList(params).then(res => {
       if(res.status == 0) {
         this.setState({
           data: res.data
-        },() => {
-          // console.log(this.state.data)
         })
       }
     })
@@ -121,11 +113,11 @@ class CategoryChildManage extends Component {
         },
         {
           value: '0',
-          label: '销售中'
+          label: '正常'
         },
         {
           value: '1',
-          label: '已下架'
+          label: '已废弃'
         }
       ]
     },
@@ -155,9 +147,7 @@ class CategoryChildManage extends Component {
       key: 'status',
       render: (status) => {
         return (
-          <div>
-            <span>{statusList[status]}</span>
-          </div>
+          status == true ? <span>{statusList[0]}</span> : <span>{statusList[1]}</span>
         )
       }
     },
@@ -165,6 +155,9 @@ class CategoryChildManage extends Component {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      render: (time) => (
+          <span>{moment(time).format("YYYY-MM-DD HH:mm:ss")}</span>
+      )
     },
     {
       title: '操作',

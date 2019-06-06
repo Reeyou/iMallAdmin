@@ -38,7 +38,10 @@ export default class mainView extends Component {
     const { routers } = this.state
     const logoStyle = {
       height: "64px",
-      background: "rgb(0,0,0)",
+      background: "#fff",
+      borderRight: '1px solid #e8e8e8',
+      // borderBottom: '1px solid #e8e8e8',
+      boxShadow: '0 1px #dadfe6'
     }
     const iconStyle = {
       fontSize: '18px',
@@ -51,7 +54,7 @@ export default class mainView extends Component {
     return (
       <Layout>
         <Sider width='220' trigger={null} collapsible collapsed={this.state.collapsed}>
-          <div style={logoStyle} >111</div>
+          <div style={logoStyle} ></div>
           <MenuApp />
         </Sider>
         <Layout>

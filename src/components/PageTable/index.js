@@ -144,21 +144,28 @@ class PageTable extends Component {
           onAddBtn={onAddBtn}
           dataSource={data.list === undefined ? data : data.list} 
         />
-        <div className="page">
-          <LocaleProvider locale={zh_CN}>
-            <Pagination
-              showSizeChanger
-              showQuickJumper 
-              onChange={this.handleChangePage}
-              onShowSizeChange={this.showSizeChange}
-              defaultCurrent={1}
-              total={data.total}
-            />
-          </LocaleProvider>
-        </div>
-        <div className="total">
-          总共 {data.total} 条信息
-        </div>
+        {
+          data.list !== undefined 
+          ? <div>
+              <div className="page">
+                <LocaleProvider locale={zh_CN}>
+                  <Pagination
+                    showSizeChanger
+                    showQuickJumper 
+                    onChange={this.handleChangePage}
+                    onShowSizeChange={this.showSizeChange}
+                    defaultCurrent={1}
+                    total={data.total}
+                  />
+                </LocaleProvider>
+              </div>
+              <div className="total">
+                总共 {data.total} 条信息
+              </div>
+            </div>
+          :
+          ''
+        }
       </div>
     )
   }

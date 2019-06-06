@@ -36,6 +36,7 @@ export default class PageBread extends Component {
     this.state.routers.map(item => {
         resultPath.push({
           path: item.path,
+          key: item.key,
           upperPath: item.upperPath,
           upperName: item.upperName,
           name: item.name
@@ -62,7 +63,7 @@ export default class PageBread extends Component {
         let result = []
         if(currentPath == item.path && item.upperName !== undefined) { 
           result.push(
-            <Breadcrumb>
+            <Breadcrumb key={item.key}>
               <Breadcrumb.Item>
                 <Icon type="home" />
                 <span>首页</span>
@@ -82,22 +83,6 @@ export default class PageBread extends Component {
       <div className="PageBread">
         {
           renderBread
-          // MainRouters.map((item, index) => {
-          //   if(item.routers) {
-          //     return <div>
-          //       <Breadcrumb>
-          //         <Breadcrumb.Item>
-          //           <Icon type="home" />
-          //           <span>首页</span>
-          //         </Breadcrumb.Item>
-          //         <Breadcrumb.Item>
-          //           <Link to={item.path}>{item.upperName}</Link>
-          //         </Breadcrumb.Item>
-          //         <Breadcrumb.Item>{item.routers[0].name}</Breadcrumb.Item>
-          //       </Breadcrumb>
-          //     </div>
-          //   } 
-          // })
         }
       </div>
     )

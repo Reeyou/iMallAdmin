@@ -4,10 +4,7 @@
 **/
 
 import React, { Component } from 'react'
-import Header from '@/components/Index/header'
-import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
-import PageBread from '@/components/PageBread'
 import { Divider, Tag } from 'antd';
 
 class MessageManage extends Component {
@@ -90,9 +87,6 @@ class MessageManage extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <Menu />
-        {/* <PageBread />   */}
         <PageTable
           title='信息管理'
           data={this.data}

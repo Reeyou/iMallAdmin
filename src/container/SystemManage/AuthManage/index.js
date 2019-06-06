@@ -3,10 +3,7 @@
   @Params: 权限管理 
 **/
 import React, { Component } from 'react'
-import Header from '@/components/Index/header'
-import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
-import PageBread from '@/components/PageBread'
 import { Divider, Tag } from 'antd';
 
 class AuthManage extends Component {
@@ -89,9 +86,6 @@ class AuthManage extends Component {
   render() {
     return (
       <div>
-        <Header />
-        <Menu />
-        {/* <PageBread />   */}
         <PageTable
           title='权限管理'
           data={this.data}

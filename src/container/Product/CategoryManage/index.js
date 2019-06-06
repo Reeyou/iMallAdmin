@@ -3,10 +3,8 @@
   @Params: 商品分类管理 
 **/
 import React, { Component } from 'react'
-import Header from '@/components/Index/header'
-import Menu from '@/components/Menu'
 import PageTable from '@/components/PageTable'
-import PageBread from '@/components/PageBread'
+import moment from 'moment'
 import { 
   Button,
   Modal,
@@ -15,22 +13,17 @@ import {
   Select
 } from 'antd';
 import  { 
-  getCategoryList,
-  addOrUpdateProduct,
-  getProductDetail,
-  updateProductStatus
+  getCategoryList
  } from '@/services/productApi'
  import '../index.less'
 
  const confirm = Modal.confirm
- const statusList = ["上架中", "已下架"]
+ const statusList = ["正常", "已废弃"]
  const levelList = ["一级","二级"]
 class CategoryManage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      pageNum: 1,
-      pageSize: 10,
       data: [],
       addVisible: false,
       editVisible: false
@@ -41,16 +34,10 @@ class CategoryManage extends Component {
   }
 
   getData() {
-    const params = {
-      pageNum: this.state.pageNum,
-      pageSize: this.state.pageSize
-    }
-    getCategoryList(params).then(res => {
+    getCategoryList().then(res => {
       if(res.status == 0) {
         this.setState({
           data: res.data
-        },() => {
-          // console.log(this.state.data)
         })
       }
     })
@@ -125,11 +112,11 @@ class CategoryManage extends Component {
         },
         {
           value: 'true',
-          label: '销售中'
+          label: '正常'
         },
         {
           value: 'false',
-          label: '已下架'
+          label: '已废弃'
         }
       ]
     },
@@ -160,7 +147,7 @@ class CategoryManage extends Component {
       key: 'status',
       render: (status) => {
         return (
-          status == "true" ? <span>{statusList[status]}</span> : ''
+          status == true ? <span>{statusList[0]}</span> : <span>{statusList[1]}</span>
         )
       }
     },
@@ -168,6 +155,9 @@ class CategoryManage extends Component {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      render: (time) => (
+        <span>{moment(time).format("YYYY-MM-DD HH:mm:ss")}</span>
+    )
     },
     {
       title: '操作',
