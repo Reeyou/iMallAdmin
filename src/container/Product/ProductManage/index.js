@@ -185,7 +185,6 @@ class ProductManage extends Component {
         return (
           <div>
             <Button type="primary" className="edit" onClick={() => this.props.history.push('/productManage/lookProduct')}>查看</Button>
-            <Button type="dashed" className="edit" onClick={() => this.props.history.push('/productManage/editProduct')}>编辑</Button>
             <Button type="danger" className="edit edit_right" onClick={() => this.handleDelete()}>删除</Button>
           </div>
         )

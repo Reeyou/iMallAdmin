@@ -53,11 +53,11 @@ export default class mainView extends Component {
     }
     return (
       <Layout>
-        <Sider width='220' trigger={null} collapsible collapsed={this.state.collapsed}>
+        <Sider width='220' style={{overflow: 'auto', height: '100vh', position: 'fixed', left: 0, zIndex: 999}} trigger={null} collapsible collapsed={this.state.collapsed}>
           <div style={logoStyle} ></div>
           <MenuApp />
         </Sider>
-        <Layout>
+        <Layout style={{paddingLeft: '220px', zIndex: 1}}>
           <Header style={{ background: '#fff', padding: 0 }}>
             <Icon
               style={iconStyle}

@@ -120,18 +120,26 @@ class AddProduct extends Component {
     console.log(categoryData[0])
     const formItemLayout = {
       labelCol: {
-        sm: { span: 4 },
+        sm: { span: 2 },
       },
       wrapperCol: {
-        sm: { span: 18 },
+        sm: { span: 10 },
+      },
+    };
+    const formImgLayout = {
+      labelCol: {
+        sm: { span: 2 },
+      },
+      wrapperCol: {
+        sm: { span: 20 },
       },
     };
     const formSmItemLayout = {
       labelCol: {
-        sm: { span: 4 },
+        sm: { span: 2 },
       },
       wrapperCol: {
-        sm: { span: 12 },
+        sm: { span: 10 },
       },
     };
     const { Option } = Select
@@ -242,13 +250,34 @@ class AddProduct extends Component {
             ) : ''}
           </Form.Item>
           <Form.Item
-            label='上传图片'
-            {...formItemLayout}
+            label='上传展示图'
+            {...formImgLayout}
           >
             {getFieldDecorator('productImg', {
               rules: [{
                 required: true,
-                message: '请上传商品图片'
+                message: '请上传商品展示图'
+              }]
+            })(
+              <Upload
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                listType="picture-card"
+                fileList={fileList}
+                onPreview={this.handlePreview}
+                onChange={this.handleChange}
+              >
+                {fileList.length >= 9 ? null : uploadButton}
+              </Upload>
+            )}
+          </Form.Item>
+          <Form.Item
+            label='上传详情图'
+            {...formImgLayout}
+          >
+            {getFieldDecorator('detailImg', {
+              rules: [{
+                required: true,
+                message: '请上传商品详情图'
               }]
             })(
               <Upload
