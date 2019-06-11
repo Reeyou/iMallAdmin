@@ -40,7 +40,7 @@ class CategoryChildManage extends Component {
       parentId: parentId
     }
     getCategoryChildrenList(params).then(res => {
-      if(res.status == 0) {
+      if(res.code == 200) {
         this.setState({
           data: res.data
         })

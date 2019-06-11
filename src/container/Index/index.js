@@ -33,12 +33,12 @@ class Index extends Component {
           password: value.password
         }
         getUserLogin(params).then(res => {
-          if(res.status == 0) {
+          if(res.code == 200) {
             this.props.history.push('/home')
             this.setState({
               data: res.data
             })
-          } else if(res.status == 1) {
+          } else if(res.code == 1) {
             message.error(res.msg)
           }
         })

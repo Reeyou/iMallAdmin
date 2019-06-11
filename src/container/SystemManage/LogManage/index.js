@@ -30,7 +30,7 @@ class LogManage extends Component {
       pageSize: this.state.pageSize
     }
     getProductList(params).then(res => {
-      if(res.status == 0) {
+      if(res.code == 200) {
         this.setState({
           data: res.data
         },() => {

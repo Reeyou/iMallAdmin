@@ -45,7 +45,7 @@ class ProductManage extends Component {
       pageSize: this.state.pageSize
     }
     getProductList(params).then(res => {
-      if(res.status == 0) {
+      if(res.code == 200) {
         this.setState({
           data: res.data
         },() => {
@@ -146,8 +146,15 @@ class ProductManage extends Component {
     },
     {
       title: '商品图片',
-      dataIndex: 'img',
-      key: 'img',
+      dataIndex: 'mainImage',
+      key: 'mainImage',
+      render: (img) => {
+        return (
+          <div>
+            <img style={{width: '100px', height: '100px'}} src={img}/>
+          </div>
+        )
+      }
     },
     {
       title: '所属分类',

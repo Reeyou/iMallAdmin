@@ -35,10 +35,10 @@ class adminSafe extends Component {
           newPassword: values.newPassword
         }
         resetPwd(params).then(res => {
-          if(res.status == 0) {
+          if(res.code == 200) {
             message.success(res.msg)
             this.props.history.push('/')
-          } else if (res.status == 1) {
+          } else if (res.code == 1) {
             message.error(res.msg)
           }
         })

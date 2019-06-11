@@ -44,7 +44,7 @@ class LookProduct extends Component {
   }
   handleAddOk = () => {
     // addOrUpdateProduct().then(res => {
-    //   if(res.status == 0) {
+    //   if(res.code == 200) {
     //     console.log(111)
     //     console.log(res.data)
     //   }
@@ -193,7 +193,7 @@ class LookProduct extends Component {
               }]
             })(
               <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                action="api/admin/uploadImg"
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={this.handlePreview}
@@ -214,7 +214,7 @@ class LookProduct extends Component {
               }]
             })(
               <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                action="api/admin/uploadImg"
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={this.handlePreview}

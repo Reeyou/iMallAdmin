@@ -18,15 +18,8 @@ class AddProduct extends Component {
       categoryData: [],
       categoryChildData: [],
       childStatus: false,
-      previewImage: '',
-      fileList: [
-        {
-          uid: '-1',
-          name: 'xxx.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-      ],
+      fileList: [],
+      productImgPath: '',
     }
   }
   componentWillMount() {
@@ -35,7 +28,7 @@ class AddProduct extends Component {
   // 总品类选择
   getCategoryData() {
     getCategoryList().then(res => {
-      if(res.status == 0) {
+      if(res.code == 200) {
         this.setState({
           categoryData: res.data.list
         })
@@ -71,13 +64,14 @@ class AddProduct extends Component {
           categoryId: this.state.childId,
           categoryName: this.state.categoryName,
           name: values.name,
+          mainImage: this.state.productImgPath,
           // desc: values.productDesc,
           stock: values.stock,
           price: values.price,
 
         }
         addOrUpdateProduct(params).then(res => {
-          if(res.status == 0) {
+          if(res.code == 200) {
             message.success(res.msg)
             setInterval(() => {
               this.props.history.push('/productManage')
@@ -112,7 +106,24 @@ class AddProduct extends Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = (info) => {
+    console.log(info)
+    this.setState({ 
+      fileList: info.fileList ,
+      // productImgPath: info.file.response.data
+    })
+    if (info.file.status === 'uploading') {
+      // this.setState({ frontLoading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      this.setState({
+        // frontLoading: false,
+        // fileList: info.fileList ,
+        productImgPath: info.file.response.data
+      });
+    }
+  };
 
   render() {
     const { categoryData, categoryChildData, fileList } = this.state;
@@ -260,7 +271,7 @@ class AddProduct extends Component {
               }]
             })(
               <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                action="api/admin/uploadImg"
                 listType="picture-card"
                 fileList={fileList}
                 onPreview={this.handlePreview}
@@ -281,11 +292,11 @@ class AddProduct extends Component {
               }]
             })(
               <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                action="api/admin/uploadImg"
                 listType="picture-card"
-                fileList={fileList}
-                onPreview={this.handlePreview}
-                onChange={this.handleChange}
+                // fileList={fileList}
+                // onPreview={this.handlePreview}
+                // onChange={this.handleChange}
               >
                 {fileList.length >= 9 ? null : uploadButton}
               </Upload>
