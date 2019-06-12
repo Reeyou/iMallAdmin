@@ -91,7 +91,7 @@ class PageTable extends Component {
     return formContent;
   }
   render() {
-    const {data, dataSource, columns, filters, title, onAddBtn} = this.props
+    const {data, scroll, columns, filters, title, onAddBtn} = this.props
     const { getFieldDecorator } = this.props.form;
     const formItemLayout  = {
       labelCol: {
@@ -139,6 +139,7 @@ class PageTable extends Component {
           </Col>
         </Form>
         <Table 
+          scroll={scroll}
           columns={columns} 
           filters={filters}
           onAddBtn={onAddBtn}

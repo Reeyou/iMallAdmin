@@ -23,16 +23,6 @@ class ProductManage extends Component {
       pageNum: 1,
       pageSize: 10,
       data: [],
-      previewVisible: false,
-      previewImage: '',
-      fileList: [
-        {
-          uid: '-1',
-          name: 'xxx.png',
-          status: 'done',
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-      ],
     }
   }
   componentWillMount() {
@@ -72,25 +62,6 @@ class ProductManage extends Component {
       onCancel() {},
     })
   }
-  //
-  getBase64(img, callback) {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result));
-    reader.readAsDataURL(img);
-  }
-
-  handlePreview = async file => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    this.setState({
-      previewImage: file.url || file.preview,
-      previewVisible: true,
-    });
-  };
-
-  handleChange = ({ fileList }) => this.setState({ fileList });
   filters = [
     {
       name: '商品名称',
@@ -138,20 +109,23 @@ class ProductManage extends Component {
       title: '商品Id',
       dataIndex: 'categoryId',
       key: 'icategoryIdd',
+      width: 200
     },
     {
       title: '商品名称',
       dataIndex: 'name',
       key: 'name',
+      width: 600
     },
     {
       title: '商品图片',
       dataIndex: 'mainImage',
       key: 'mainImage',
+      width: 200,
       render: (img) => {
         return (
           <div>
-            <img style={{width: '100px', height: '100px'}} src={img}/>
+            <img style={{width: '80px', height: '80px', borderRadius: '6px'}} src={img}/>
           </div>
         )
       }
@@ -160,16 +134,19 @@ class ProductManage extends Component {
       title: '所属分类',
       dataIndex: 'categoryName',
       key: 'categoryName',
+      width: 200
     },
     {
       title: '价格(元)',
       dataIndex: 'price',
       key: 'price',
+      width: 200
     },
     {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
+      width: 200,
       render: (status) => {
         return (
           <div>
@@ -182,16 +159,19 @@ class ProductManage extends Component {
       title: '添加时间',
       dataIndex: 'updateTime',
       key: 'updateTime',
+      width: 300,
       render: (time) => (
           <span>{moment(time).format("YYYY-MM-DD HH:mm:ss")}</span>
       )
     },
     {
       title: '操作',
-      render: () => {
+      width: 180,
+      fixed: 'right',
+      render: (record) => {
         return (
           <div>
-            <Button type="primary" className="edit" onClick={() => this.props.history.push('/productManage/lookProduct')}>查看</Button>
+            <Button type="primary" className="edit" onClick={() => this.props.history.push(`/productManage/lookProduct?${record.id}`)}>查看</Button>
             <Button type="danger" className="edit edit_right" onClick={() => this.handleDelete()}>删除</Button>
           </div>
         )
@@ -209,15 +189,10 @@ class ProductManage extends Component {
         sm: { span: 18 },
       },
     };
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
     return (
       <div>
         <PageTable
+          scroll={{ x: 1400, y : 800 }}
           title='商品列表'
           data={this.state.data}
           columns={this.columns}

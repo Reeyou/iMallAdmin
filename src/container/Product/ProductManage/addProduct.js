@@ -50,7 +50,7 @@ class AddProduct extends Component {
   // 子分类选择
   handleChangeCategoryChild(value) {
     this.setState({
-      childId: value.split('-')[0],
+      categoryChildId: value.split('-')[0],
       categoryName: value.split('-')[1]
     })
   }
@@ -61,10 +61,10 @@ class AddProduct extends Component {
 
       } else {
         const params = {
-          categoryId: this.state.childId,
+          categoryId: this.state.categoryChildId,
           categoryName: this.state.categoryName,
           name: values.name,
-          mainImage: this.state.productImgPath,
+          // mainImage: this.state.productImgPath,
           // desc: values.productDesc,
           stock: values.stock,
           price: values.price,
@@ -107,9 +107,12 @@ class AddProduct extends Component {
   };
 
   handleChange = (info) => {
-    console.log(info)
+    let productImgPath = []
+    // this.state.fileList.map((item, index) => {
+    //   productImgPath.push(item.response.data)
+    // })
     this.setState({ 
-      fileList: info.fileList ,
+      fileList: info.fileList,
       // productImgPath: info.file.response.data
     })
     if (info.file.status === 'uploading') {
@@ -119,8 +122,9 @@ class AddProduct extends Component {
     if (info.file.status === 'done') {
       this.setState({
         // frontLoading: false,
-        // fileList: info.fileList ,
-        productImgPath: info.file.response.data
+        // productImgPath: productImgPath
+        productImgPath: info.fileList[0].response.data
+        // productImgPath: info.fileList.response.data
       });
     }
   };
@@ -128,7 +132,6 @@ class AddProduct extends Component {
   render() {
     const { categoryData, categoryChildData, fileList } = this.state;
     const { getFieldDecorator } = this.props.form;
-    console.log(categoryData[0])
     const formItemLayout = {
       labelCol: {
         sm: { span: 2 },
@@ -242,23 +245,22 @@ class AddProduct extends Component {
                 }
               </Select>
             )}
-            {
-              this.state.childStatus ? 
-              (
-              
-                <Select
-                  placeholder="请选择子分类"
-                  onChange={(value) => this.handleChangeCategoryChild(value)}
-                  style={{width: '47%', display: 'inline-block', marginLeft: '20px'}}
-                >
-                  {
-                    categoryChildData.map((item,index) => {
-                      return <Option key={index} value={`${item.id}-${item.name}`}>{item.name}</Option>
-                    })
-                  }
-                </Select>
-              
-            ) : ''}
+              {
+                this.state.childStatus ? 
+                (
+                  <Select
+                    placeholder="请选择子分类"
+                    onChange={(value) => this.handleChangeCategoryChild(value)}
+                    style={{width: '47%', display: 'inline-block', marginLeft: '20px', borderColor: '#f5222d'}}
+                  >
+                    {
+                      categoryChildData.map((item,index) => {
+                        return <Option key={index} value={`${item.id}-${item.name}`}>{item.name}</Option>
+                      })
+                    }
+                  </Select>
+                ) : ''
+              }
           </Form.Item>
           <Form.Item
             label='上传展示图'
