@@ -115,7 +115,7 @@ class ProductManage extends Component {
       title: '商品名称',
       dataIndex: 'name',
       key: 'name',
-      width: 600
+      width: 400
     },
     {
       title: '商品图片',
@@ -192,7 +192,7 @@ class ProductManage extends Component {
     return (
       <div>
         <PageTable
-          scroll={{ x: 1400, y : 800 }}
+          scroll={{ x: 1500, y : 800 }}
           title='商品列表'
           data={this.state.data}
           columns={this.columns}

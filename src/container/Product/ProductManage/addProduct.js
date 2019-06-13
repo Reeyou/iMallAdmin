@@ -11,6 +11,8 @@ import  {
  } from '@/services/productApi'
  import '../index.less'
 
+ const { TextArea } = Input;
+
 class AddProduct extends Component {
   constructor(props) {
     super(props)
@@ -64,7 +66,9 @@ class AddProduct extends Component {
           categoryId: this.state.categoryChildId,
           categoryName: this.state.categoryName,
           name: values.name,
-          // mainImage: this.state.productImgPath,
+          mainImage: this.state.productImgPath,
+          // detailImage: this.state.productImgPath,
+          // detailParameters: 
           // desc: values.productDesc,
           stock: values.stock,
           price: values.price,
@@ -108,9 +112,14 @@ class AddProduct extends Component {
 
   handleChange = (info) => {
     let productImgPath = []
-    // this.state.fileList.map((item, index) => {
-    //   productImgPath.push(item.response.data)
-    // })
+    this.state.fileList.map((item, index) => {
+      productImgPath.push(item.response.data)
+    })
+    console.log(productImgPath)
+    let imgPath = productImgPath.join(',')
+    console.log(imgPath)
+    console.log(typeof(imgPath))
+    let Path = 
     this.setState({ 
       fileList: info.fileList,
       // productImgPath: info.file.response.data
@@ -122,8 +131,8 @@ class AddProduct extends Component {
     if (info.file.status === 'done') {
       this.setState({
         // frontLoading: false,
-        // productImgPath: productImgPath
-        productImgPath: info.fileList[0].response.data
+        productImgPath: imgPath
+        // productImgPath: info.fileList[0].response.data
         // productImgPath: info.fileList.response.data
       });
     }
@@ -263,7 +272,7 @@ class AddProduct extends Component {
               }
           </Form.Item>
           <Form.Item
-            label='上传展示图'
+            label='商品展示图'
             {...formImgLayout}
           >
             {getFieldDecorator('productImg', {
@@ -284,7 +293,7 @@ class AddProduct extends Component {
             )}
           </Form.Item>
           <Form.Item
-            label='上传详情图'
+            label='商品详情图'
             {...formImgLayout}
           >
             {getFieldDecorator('detailImg', {
@@ -302,6 +311,19 @@ class AddProduct extends Component {
               >
                 {fileList.length >= 9 ? null : uploadButton}
               </Upload>
+            )}
+          </Form.Item>
+          <Form.Item
+            label='商品参数'
+            {...formImgLayout}
+          >
+            {getFieldDecorator('detailImg', {
+              rules: [{
+                required: true,
+                message: '请输入商品参数'
+              }]
+            })(
+              <TextArea style={{width: '34%'}} rows={4} />
             )}
           </Form.Item>
         </Form>

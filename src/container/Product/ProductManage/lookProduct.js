@@ -12,6 +12,7 @@ import  {
  } from '@/services/productApi'
  import '../index.less'
 
+ const { TextArea } = Input;
 class LookProduct extends Component {
   constructor(props) {
     super(props)
@@ -331,6 +332,19 @@ class LookProduct extends Component {
               >
                 {fileList.length >= 9 ? null : uploadButton}
               </Upload>
+            )}
+          </Form.Item>
+          <Form.Item
+            label='商品参数'
+            {...formImgLayout}
+          >
+            {getFieldDecorator('detailImg', {
+              rules: [{
+                required: true,
+                message: '请输入商品参数'
+              }]
+            })(
+              <TextArea style={{width: '34%'}} rows={4} />
             )}
           </Form.Item>
         </Form>
