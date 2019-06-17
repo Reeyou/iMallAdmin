@@ -28,7 +28,7 @@ export async function searchProduct(params) {
 {/* <品类管理> */}
 // 获取总品类列表
 export async function getCategoryList(params) {
-  return request("GET", "api/admin/getCategoryList", params)
+  return request("POST", "api/admin/getCategoryList", params)
 }
 // 获取总品类子品类列表
 export async function getCategoryChildrenList(params) {
@@ -38,7 +38,19 @@ export async function getCategoryChildrenList(params) {
 export async function addCategory(params) {
   return request("POST", "api/admin/addCategory", params)
 }
+// 获取品类信息
+export async function getCategoryDetail(params) {
+  return request("POST", "api/admin/getCategoryDetail", params)
+}
 // 更新品类信息
 export async function updateCategory(params) {
   return request("POST", "api/admin/updateCategory", params)
+}
+// 更新品类状态信息
+export async function updataCategoryStatus(params) {
+  return request("POST", "api/admin/updataCategoryStatus", params)
+}
+// 删除品类信息
+export async function deleteCategory(params) {
+  return request("POST", "api/admin/deleteCategory", params)
 }

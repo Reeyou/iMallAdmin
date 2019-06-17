@@ -192,7 +192,7 @@ class ProductManage extends Component {
     return (
       <div>
         <PageTable
-          scroll={{ x: 1500, y : 800 }}
+          scroll={{ x: 1500, y : 1400 }}
           title='商品列表'
           data={this.state.data}
           columns={this.columns}

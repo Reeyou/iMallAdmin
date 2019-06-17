@@ -34,7 +34,7 @@ export default function request(method, url, params) {
   //封装Get方法
   function Get(url, params) {
     return new Promise((resolve, reject) => {
-      axios.get(url, qs.stringify(params))
+      axios.get(url, params)
       .then(res => {
         resolve(res.data);
       })

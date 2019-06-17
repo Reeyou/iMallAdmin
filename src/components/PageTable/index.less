@@ -14,13 +14,16 @@
     right: 50px;
     top: 0px;
   }
-//   .ant-input,
-//   .ant-select,
-//   .ant-table,
-//   .ant-select-dropdown .ant-select-dropdown-menu-item,
-//   .ant-form label {
-//     font-size: 12px;
-// }
+  .ant-table-wrapper {
+    .ant-table-scroll {
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+    .ant-table-body{
+      overflow-x: auto!important;
+      overflow-y: auto!important;
+    }
+  }
   .ant-form-item-label {
     text-align: left;
   }
@@ -46,6 +49,9 @@
   .ant-table-tbody > tr > td,
   .ant-table-thead > tr > th {
     text-align: center;
+  }
+  .ant-table-body {
+    overflow: hidden;
   }
 
   .total,
@@ -74,3 +80,6 @@
 //     background: #f5f5f5;
 //   }
 // }
+.table .ant-table-tbody > tr > td, .table .ant-table-thead > tr > th {
+  vertical-align: middle;
+}

@@ -9,10 +9,16 @@ import {
   Modal,
   Input,
   Form,
-  Select
+  Select,
+  message
 } from 'antd';
 import  { 
   getCategoryChildrenList,
+  getCategoryDetail,
+  addCategory,
+  updateCategory,
+  deleteCategory,
+  updataCategoryStatus
  } from '@/services/productApi'
  import moment from 'moment'
  import '../index.less'
@@ -26,8 +32,8 @@ class CategoryChildManage extends Component {
     this.state = {
       data: [],
       addVisible: false,
-      editVisible: false
-
+      editVisible: false,
+      parentId: this.props.location.search.split('?')[1]
     }
   }
   componentWillMount() {
@@ -35,9 +41,8 @@ class CategoryChildManage extends Component {
   }
 
   getData() {
-    const parentId = this.props.location.search.split('?')[1]
     const params = {
-      parentId: parentId
+      parentId: this.state.parentId
     }
     getCategoryChildrenList(params).then(res => {
       if(res.code == 200) {
@@ -46,7 +51,16 @@ class CategoryChildManage extends Component {
         })
       }
     })
-    
+    const detailParams = {
+      categoryId: this.state.parentId
+    }
+    getCategoryDetail(detailParams).then(res => {
+      if(res.code == 200) {
+        this.setState({
+           parentName: res.data.name
+        })
+      }
+    })
   }
    // 添加子分类信息
    addProduct = () => {
@@ -55,6 +69,22 @@ class CategoryChildManage extends Component {
     })
   }
   handleAddOk = () => {
+    this.props.form.validateFields((err, values) => {
+      if(!err) {
+        const params = {
+          parentId: this.state.parentId,
+          categoryName: values.categoryName
+        }
+        addCategory(params).then(res => {
+          if(res.code == 200) {
+            message.success(res.msg)
+            this.getData()
+          } else {
+            message.error(res.msg)
+          }
+        })
+      }
+    })
     this.setState({
       addVisible: false
     })
@@ -66,14 +96,44 @@ class CategoryChildManage extends Component {
   }
 
   // 编辑分类信息
-  handleEdit = () => {
+  handleEdit = (val) => {
+    const params = {
+      categoryId: val.categoryId
+    }
+    this.setState({
+      categoryId: val.categoryId
+    })
+    console.log(params)
+    getCategoryDetail(params).then(res => {
+      if(res.code == 200) {
+        this.setState({
+          categoryChildName: res.data.name
+        })
+      }
+    })
     this.setState({
       editVisible: true
     })
   }
   handleEditOk = () => {
-    this.setState({
-      editVisible: false
+    this.props.form.validateFields((err, values) => {
+      if(!err) {
+        const params = {
+          categoryId: this.state.categoryId,
+          categoryName: values.categoryNameEdit
+        }
+        updateCategory(params).then(res => {
+          if(res.code == 200) {
+            message.success(res.msg)
+            this.getData()
+          } else {
+            message.error(res.msg)
+          }
+        })
+        this.setState({
+          editVisible: false
+        })
+      }
     })
   }
   handleEditCancel = () => {
@@ -83,16 +143,53 @@ class CategoryChildManage extends Component {
   }
 
   // 删除分类
-  handleDelete = () => {
+  handleDelete = (val) => {
+    const that = this
     confirm({
       title: '删除子分类',
       content: '是否删除该子分类？',
       cancelText: '取消',
       okText: '确认',
       onOk() {
-
+        deleteCategory({categoryId: val.categoryId}).then(res => {
+          if(res.code == 200) {
+            message.success(res.msg)
+            that.getData()
+          } else {
+            message.error(res.msg)
+          }
+        })
       },
       onCancel() {}
+    })
+  }
+
+  // 
+  changeStatus = (val) => {
+    const that = this
+    let statusText = val.status ? '废弃' : '使用'
+    confirm({
+      title: '更改品类状态',
+      content: `是否${statusText}该品类?`,
+      cancelText: '取消',
+      okText: '确认',
+      onOk() {
+        const params = {
+          categoryId: val.categoryId,
+          status: !val.status
+        }
+        updataCategoryStatus(params).then(res => {
+          if(res.code == 200) {
+            message.success(res.msg)
+            that.getData()
+          } else {
+            message.error(res.msg)
+          }
+        })
+      },
+      onCancel() {
+
+      }
     })
   }
 
@@ -143,11 +240,13 @@ class CategoryChildManage extends Component {
     },
     {
       title: '状态',
-      dataIndex: 'status',
       key: 'status',
-      render: (status) => {
+      render: (record) => {
         return (
-          status == true ? <span>{statusList[0]}</span> : <span>{statusList[1]}</span>
+          record.status == true ? 
+          <div style={{fontSize: '14px'}}>正常<span className='upStatus' onClick={(val) => this.changeStatus({categoryId: record.id, status: record.status})}>废弃</span></div>
+          : 
+          <div style={{fontSize: '14px'}}>已废弃<span className='downStatus' onClick={(val) => this.changeStatus({categoryId: record.id, status: record.status})}>使用</span></div>
         )
       }
     },
@@ -161,11 +260,11 @@ class CategoryChildManage extends Component {
     },
     {
       title: '操作',
-      render: () => {
+      render: (Record) => {
         return (
           <div>
-            <Button type="primary" className="edit" onClick={() => this.handleEdit()}>编辑</Button>
-            <Button type="danger" className="edit edit_right" onClick={() => this.handleDelete()}>删除</Button>
+            <Button type="primary" className="edit" onClick={(val) => this.handleEdit({categoryId: Record.id})}>编辑</Button>
+            <Button type="danger" className="edit edit_right" onClick={(val) => this.handleDelete({categoryId: Record.id})}>删除</Button>
           </div>
         )
       }
@@ -208,12 +307,9 @@ class CategoryChildManage extends Component {
             >
               {getFieldDecorator('forCategory',{
                 rules: [],
-                initialValue: 0
+                initialValue: this.state.parentName
               })(
-                <Select>
-                  <Option value='1'>1</Option>
-                  <Option value='2'>2</Option>
-                </Select>
+                <Input readOnly/>
               )}
             </Form.Item>
             <Form.Item
@@ -241,19 +337,17 @@ class CategoryChildManage extends Component {
             >
               {getFieldDecorator('forCategoryEdit',{
                 rules: [],
-                initialValue: 0
+                initialValue: this.state.parentName
               })(
-                <Select>
-                  <Option value='1'>1</Option>
-                  <Option value='2'>2</Option>
-                </Select>
+                <Input disabled/>
               )}
             </Form.Item>
             <Form.Item
               label='子分类名称'
             >
               {getFieldDecorator('categoryNameEdit',{
-                rules: []
+                rules: [],
+                initialValue: this.state.categoryChildName
               })(
                 <Input/>,
               )}
