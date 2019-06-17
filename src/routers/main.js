@@ -59,7 +59,7 @@ export default class mainView extends Component {
         <Sider width='220' style={{overflow: 'auto', height: '100vh', position: 'fixed', left: 0, zIndex: 999, background: '#000'}} trigger={null} collapsible collapsed={this.state.collapsed}>
           <div style={logoStyle}>
             <div>
-              <img style={{width: '164px', height: '60px'}} src={logo}/>
+              <img style={{width: '164px', height: '64px'}} src={logo}/>
             </div>
           </div>
           <MenuApp />

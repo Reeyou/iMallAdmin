@@ -21,7 +21,9 @@ class AddProduct extends Component {
       categoryChildData: [],
       childStatus: false,
       fileList: [],
+      detailFileList: [],
       productImgPath: '',
+      productDetailPath: ''
     }
   }
   componentWillMount() {
@@ -52,8 +54,9 @@ class AddProduct extends Component {
   // 子分类选择
   handleChangeCategoryChild(value) {
     this.setState({
-      categoryChildId: value.split('-')[0],
-      categoryName: value.split('-')[1]
+      categoryChildId: value
+      // categoryChildId: value.split('-')[0],
+      // categoryName: value.split('-')[1]
     })
   }
   //添加商品
@@ -64,10 +67,11 @@ class AddProduct extends Component {
       } else {
         const params = {
           categoryId: this.state.categoryChildId,
-          categoryName: this.state.categoryName,
+          // categoryName: this.state.categoryName,
+          categoryName: '手机',
           name: values.name,
           mainImage: this.state.productImgPath,
-          // detailImage: this.state.productImgPath,
+          subImages: this.state.productDetailPath,
           // detailParameters: 
           // desc: values.productDesc,
           stock: values.stock,
@@ -115,11 +119,7 @@ class AddProduct extends Component {
     this.state.fileList.map((item, index) => {
       productImgPath.push(item.response.data)
     })
-    console.log(productImgPath)
     let imgPath = productImgPath.join(',')
-    console.log(imgPath)
-    console.log(typeof(imgPath))
-    let Path = 
     this.setState({ 
       fileList: info.fileList,
       // productImgPath: info.file.response.data
@@ -132,14 +132,34 @@ class AddProduct extends Component {
       this.setState({
         // frontLoading: false,
         productImgPath: imgPath
-        // productImgPath: info.fileList[0].response.data
-        // productImgPath: info.fileList.response.data
       });
     }
   };
 
+  handleChangeDetail = (info) => {
+    let productDetailPath = []
+    this.state.detailFileList.map((item, index) => {
+      productDetailPath.push(item.response.data)
+    })
+    let imgPath = productDetailPath.join(',')
+    this.setState({ 
+      detailFileList: info.fileList,
+      // productDetailPath: info.file.response.data
+    })
+    if (info.file.status === 'uploading') {
+      // this.setState({ frontLoading: true });
+      return;
+    }
+    if (info.file.status === 'done') {
+      this.setState({
+        // frontLoading: false,
+        productDetailPath: imgPath
+      });
+    }
+  }
+
   render() {
-    const { categoryData, categoryChildData, fileList } = this.state;
+    const { categoryData, categoryChildData, fileList, detailFileList } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -249,7 +269,7 @@ class AddProduct extends Component {
               >
                 {
                   categoryData.map((item,index) => {
-                    return <Option key={index} value={item.id}>{item.name}</Option>
+                    return <Select.Option key={index} value={item.id}>{item.name}</Select.Option>
                   })
                 }
               </Select>
@@ -264,7 +284,7 @@ class AddProduct extends Component {
                   >
                     {
                       categoryChildData.map((item,index) => {
-                        return <Option key={index} value={`${item.id}-${item.name}`}>{item.name}</Option>
+                        return <Select.Option key={index} value={item.id}>{item.name}</Select.Option>
                       })
                     }
                   </Select>
@@ -305,25 +325,12 @@ class AddProduct extends Component {
               <Upload
                 action="api/admin/uploadImg"
                 listType="picture-card"
-                // fileList={fileList}
+                fileList={detailFileList}
                 // onPreview={this.handlePreview}
-                // onChange={this.handleChange}
+                onChange={this.handleChangeDetail}
               >
-                {fileList.length >= 9 ? null : uploadButton}
+                {detailFileList.length >= 9 ? null : uploadButton}
               </Upload>
-            )}
-          </Form.Item>
-          <Form.Item
-            label='商品参数'
-            {...formImgLayout}
-          >
-            {getFieldDecorator('detailImg', {
-              rules: [{
-                required: true,
-                message: '请输入商品参数'
-              }]
-            })(
-              <TextArea style={{width: '34%'}} rows={4} />
             )}
           </Form.Item>
         </Form>

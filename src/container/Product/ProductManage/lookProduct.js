@@ -20,11 +20,13 @@ class LookProduct extends Component {
       categoryData: [],
       categoryChildData: [],
       childStatus: false,
-      fileList: [],
       productImgPath: '',
-      productDetailData: [],
+      productDetailPath: '',
+      imgSrc: [],
       parentCategoryId: '',
-      categoryId: ''
+      categoryId: '',
+      fileList: [],
+      detailFileList: []
     }
   }
   componentWillMount() {
@@ -44,8 +46,27 @@ class LookProduct extends Component {
         this.setState({
           productDetailData: res.data,
           parentCategoryId: res.data.parentCategoryId,
-          categoryId: res.data.categoryId
+          categoryId: res.data.categoryId,
+          imgSrc: res.data.mainImage.split(','),
+          detailImgSrc: res.data.subImages ? res.data.subImages.split(',') : [],
         },() => {
+          let file = {}, detailFile = {}
+          this.state.imgSrc.map((item, index) => {
+              file = {
+                uid: index,
+                url: item
+              }
+            this.state.fileList.push(file)
+            console.log(this.state.fileList)
+          })
+          this.state.detailImgSrc.map((item, index) => {
+            detailFile = {
+              uid: index,
+              url: item
+            }
+          this.state.detailFileList.push(detailFile)
+          console.log(this.state.detailFile)
+        })
           if(this.state.categoryId !== null) {
             this.setState({
               childStatus: true
@@ -82,19 +103,39 @@ class LookProduct extends Component {
 
   // 
   handleChange = (info) => {
-    console.log(info)
+    let productImgPath = []
+    this.state.fileList.map((item, index) => {
+      productImgPath.push(item.response.data)
+    })
+    let imgPath = productImgPath.join(',')
     this.setState({ 
       fileList: info.fileList,
      })
      if (info.file.status === 'uploading') {
-      // this.setState({ frontLoading: true });
       return;
     }
     if (info.file.status === 'done') {
       this.setState({
-        // frontLoading: false,
-        // productImgPath: productImgPath
-        productImgPath: info.fileList[0].response.data
+        productImgPath: imgPath
+      });
+    }
+  }
+  // 
+  handleChangeDetail = (info) => {
+    let productDetailPath = []
+    this.state.detailFileList.map((item, index) => {
+      productDetailPath.push(item.response.data)
+    })
+    let detailPath = productDetailPath.join(',')
+    this.setState({ 
+      detailFileList: info.fileList,
+     })
+     if (info.file.status === 'uploading') {
+      return;
+    }
+    if (info.file.status === 'done') {
+      this.setState({
+        productDetailPath: detailPath
       });
     }
   }
@@ -124,8 +165,9 @@ class LookProduct extends Component {
   // 子分类选择
   handleChangeCategoryChild(value) {
     this.setState({
-      categoryChildId: value.split('-')[0],
-      categoryName: value.split('-')[1]
+      categoryChildId: value
+      // categoryChildId: value.split('-')[0],
+      // categoryName: value.split('-')[1]
     })
   }
   // 
@@ -138,6 +180,7 @@ class LookProduct extends Component {
           categoryName: this.state.categoryName,
           name: values.name,
           mainImage: this.state.productImgPath,
+          subImages: this.state.productDetailPath,
           // desc: values.productDesc,
           stock: values.stock,
           price: values.price,
@@ -156,7 +199,7 @@ class LookProduct extends Component {
 
   render() {
     console.log(this.state.categoryId)
-    const { categoryData, categoryChildData, childStatus, fileList, productDetailData, parentCategoryId, categoryId } = this.state;
+    const { categoryData, categoryChildData, childStatus, fileList, detailFileList, productDetailData, parentCategoryId, categoryId, imgSrc } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -271,7 +314,7 @@ class LookProduct extends Component {
               >
                 {
                   categoryData.map((item,index) => {
-                    return <Option key={index} value={item.id}>{item.name}</Option>
+                    return <Select.Option key={index} value={item.id}>{item.name}</Select.Option>
                   })
                 }
               </Select>
@@ -286,7 +329,7 @@ class LookProduct extends Component {
                 >
                   {
                     categoryChildData.map((item,index) => {
-                      return <Option key={index} value={`${item.id}-${item.name}`}>{item.name}</Option>
+                      return <Select.Option key={index} value={item.id}>{item.name}</Select.Option>
                     })
                   }
                 </Select>
@@ -298,19 +341,20 @@ class LookProduct extends Component {
           >
             {getFieldDecorator('productImg', {
               rules: [{
-                required: true,
-                message: '请上传商品展示图'
+                // required: true,
+                // message: '请上传商品展示图'
               }]
             })(
-              <Upload
-                action="api/admin/uploadImg"
-                listType="picture-card"
-                fileList={fileList}
-                onPreview={this.handlePreview}
-                onChange={this.handleChange}
-              >
-                {fileList.length >= 9 ? null : uploadButton}
-              </Upload>
+                <Upload
+                  action="api/admin/uploadImg"
+                  listType="picture-card"
+                  fileList={fileList}
+                  // onPreview={this.handlePreview}
+                  onChange={this.handleChange}
+                >
+                  {fileList.length >= 9 ? null : uploadButton}
+                  {/* {imgSrc.length < 9 ? <img style={{width: 100, height: 100, display: 'inlien-block'}} src={item} alt=""/> : uploadButton} */}
+                </Upload>
             )}
           </Form.Item>
           <Form.Item
@@ -323,28 +367,23 @@ class LookProduct extends Component {
                 message: '请上传商品详情图'
               }]
             })(
-              <Upload
-                action="api/admin/uploadImg"
-                listType="picture-card"
-                // fileList={fileList}
-                // onPreview={this.handlePreview}
-                // onChange={this.handleChange}
-              >
-                {fileList.length >= 9 ? null : uploadButton}
-              </Upload>
-            )}
-          </Form.Item>
-          <Form.Item
-            label='商品参数'
-            {...formImgLayout}
-          >
-            {getFieldDecorator('detailImg', {
-              rules: [{
-                required: true,
-                message: '请输入商品参数'
-              }]
-            })(
-              <TextArea style={{width: '34%'}} rows={4} />
+             // <div>
+              //   {
+              //     imgSrc.map((item, index) => {
+              //       return 
+                        <Upload
+                        action="api/admin/uploadImg"
+                        listType="picture-card"
+                        fileList={detailFileList}
+                        // onPreview={this.handlePreview}
+                        onChange={this.handleChangeDetail}
+                      >
+                        {detailFileList.length >= 9 ? null : uploadButton}
+                        {/* {imgSrc ? <img style={{width: 100, height: 100, display: 'inlien-block'}} src={imgSrc[0]} alt=""/> : uploadButton} */}
+                      </Upload>
+              //     })
+              //   }
+              // </div>
             )}
           </Form.Item>
         </Form>
