@@ -142,6 +142,7 @@ class CategoryManage extends Component {
 
   // 删除分类
   handleDelete = (val) => {
+    const that = this
     confirm({
       title: '删除分类',
       content: '是否删除该分类？',
@@ -154,7 +155,7 @@ class CategoryManage extends Component {
         deleteCategory(params).then(res => {
           if(res.code == 200) {
             message.success(res.msg)
-            this.getData()
+            that.getData()
           } else {
             message.error(res.msg)
           }

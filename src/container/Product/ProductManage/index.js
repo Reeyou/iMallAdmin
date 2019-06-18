@@ -8,8 +8,8 @@ import moment from 'moment'
 import { Button, Modal, Form, Icon } from 'antd';
 import  { 
   getProductList,
-  addOrUpdateProduct,
-  getProductDetail,
+  getCategoryList,
+  getCategoryChildrenList,
   updateProductStatus
  } from '@/services/productApi'
  import '../index.less'
@@ -23,6 +23,8 @@ class ProductManage extends Component {
       pageNum: 1,
       pageSize: 10,
       data: [],
+      categoryData: [],
+      categoryDataList: []
     }
   }
   componentWillMount() {
@@ -107,8 +109,8 @@ class ProductManage extends Component {
   columns = [
     {
       title: '商品Id',
-      dataIndex: 'categoryId',
-      key: 'icategoryIdd',
+      dataIndex: 'id',
+      key: 'id',
       width: 200
     },
     {
@@ -125,22 +127,22 @@ class ProductManage extends Component {
       render: (img) => {
         return (
           <div>
-            <img style={{width: '80px', height: '80px', borderRadius: '6px'}} src={img}/>
+            <img style={{width: '80px', height: "68px", border: '1px solid #f5f5f5', borderRadius: '6px'}} src={img.split(',')[0]}/>
           </div>
         )
       }
-    },
-    {
-      title: '所属分类',
-      dataIndex: 'categoryName',
-      key: 'categoryName',
-      width: 200
     },
     {
       title: '价格(元)',
       dataIndex: 'price',
       key: 'price',
       width: 200
+    },
+     {
+      title: '库存(件)',
+      dataIndex: 'stock',
+      key: 'stock',
+      width: 200,
     },
     {
       title: '状态',

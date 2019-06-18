@@ -12,7 +12,7 @@ import  {
  } from '@/services/productApi'
  import '../index.less'
 
- const { TextArea } = Input;
+ let timer = null
 class LookProduct extends Component {
   constructor(props) {
     super(props)
@@ -26,12 +26,20 @@ class LookProduct extends Component {
       parentCategoryId: '',
       categoryId: '',
       fileList: [],
-      detailFileList: []
+      detailFileList: [],
+      previewVisible: false,
+      previewImage: '',
+      previewDetailVisible: false,
+      previewDetailImage: '',
     }
   }
   componentWillMount() {
     this.getCategoryData()
     this.fetchProduct()
+  }
+
+  componentWillUnmount() {
+    clearInterval(timer)
   }
 
 
@@ -46,6 +54,7 @@ class LookProduct extends Component {
         this.setState({
           productDetailData: res.data,
           parentCategoryId: res.data.parentCategoryId,
+          id: res.data.id,
           categoryId: res.data.categoryId,
           imgSrc: res.data.mainImage.split(','),
           detailImgSrc: res.data.subImages ? res.data.subImages.split(',') : [],
@@ -57,7 +66,6 @@ class LookProduct extends Component {
                 url: item
               }
             this.state.fileList.push(file)
-            console.log(this.state.fileList)
           })
           this.state.detailImgSrc.map((item, index) => {
             detailFile = {
@@ -65,7 +73,6 @@ class LookProduct extends Component {
               url: item
             }
           this.state.detailFileList.push(detailFile)
-          console.log(this.state.detailFile)
         })
           if(this.state.categoryId !== null) {
             this.setState({
@@ -80,7 +87,6 @@ class LookProduct extends Component {
         })
       }
     })
-    
   }
 
   //
@@ -90,6 +96,7 @@ class LookProduct extends Component {
     reader.readAsDataURL(img);
   }
 
+  //
   handlePreview = async file => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -102,12 +109,25 @@ class LookProduct extends Component {
   };
 
   // 
-  handleChange = (info) => {
-    let productImgPath = []
-    this.state.fileList.map((item, index) => {
-      productImgPath.push(item.response.data)
-    })
-    let imgPath = productImgPath.join(',')
+  handleDetailPreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewDetailImage: file.url || file.preview,
+      previewDetailVisible: true,
+    });
+  };
+
+  // 
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  // 
+  handleDetailCancel = () => this.setState({ previewDetailVisible: false });
+
+  // 
+  handleChangeImg = (info) => {
     this.setState({ 
       fileList: info.fileList,
      })
@@ -115,6 +135,18 @@ class LookProduct extends Component {
       return;
     }
     if (info.file.status === 'done') {
+      this.state.fileList.pop()
+      let currentImgList = this.state.fileList 
+
+      currentImgList.push({uid: info.file.uid, url: info.file.response.data})
+      this.setState({
+        fileList: currentImgList
+      })
+      let productImgPath = []
+      this.state.fileList.map((item, index) => {
+        productImgPath.push(item.url)
+      })
+      let imgPath = productImgPath.join(',')
       this.setState({
         productImgPath: imgPath
       });
@@ -122,11 +154,6 @@ class LookProduct extends Component {
   }
   // 
   handleChangeDetail = (info) => {
-    let productDetailPath = []
-    this.state.detailFileList.map((item, index) => {
-      productDetailPath.push(item.response.data)
-    })
-    let detailPath = productDetailPath.join(',')
     this.setState({ 
       detailFileList: info.fileList,
      })
@@ -134,6 +161,18 @@ class LookProduct extends Component {
       return;
     }
     if (info.file.status === 'done') {
+      this.state.detailFileList.pop()
+      let currentDetailImgList = this.state.detailFileList 
+
+      currentDetailImgList.push({uid: info.file.uid, url: info.file.response.data})
+      this.setState({
+        detailFileList: currentDetailImgList
+      })
+      let productDetailPath = []
+      this.state.detailFileList.map((item, index) => {
+        productDetailPath.push(item.url)
+      })
+      let detailPath = productDetailPath.join(',')
       this.setState({
         productDetailPath: detailPath
       });
@@ -166,8 +205,6 @@ class LookProduct extends Component {
   handleChangeCategoryChild(value) {
     this.setState({
       categoryChildId: value
-      // categoryChildId: value.split('-')[0],
-      // categoryName: value.split('-')[1]
     })
   }
   // 
@@ -175,9 +212,8 @@ class LookProduct extends Component {
     this.props.form.validateFields((err, values) => {
       if(!err) {
         const params = {
-          id: this.state.productDetailData.id,
-          categoryId: this.state.categoryChildId,
-          categoryName: this.state.categoryName,
+          id: this.state.id,
+          categoryId: this.state.categoryId,
           name: values.name,
           mainImage: this.state.productImgPath,
           subImages: this.state.productDetailPath,
@@ -188,7 +224,7 @@ class LookProduct extends Component {
         addOrUpdateProduct(params).then(res => {
           if(res.code == 200) {
             message.success(res.msg)
-            setInterval(() => {
+            timer = setInterval(() => {
               this.props.history.push('/productManage')
             }, 1000)
           }
@@ -198,8 +234,7 @@ class LookProduct extends Component {
   }
 
   render() {
-    console.log(this.state.categoryId)
-    const { categoryData, categoryChildData, childStatus, fileList, detailFileList, productDetailData, parentCategoryId, categoryId, imgSrc } = this.state;
+    const { categoryData, categoryChildData, fileList, detailFileList, productDetailData, parentCategoryId, categoryId, imgSrc } = this.state;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -341,21 +376,24 @@ class LookProduct extends Component {
           >
             {getFieldDecorator('productImg', {
               rules: [{
-                // required: true,
-                // message: '请上传商品展示图'
+                required: true,
+                message: '请上传商品展示图'
               }]
             })(
                 <Upload
                   action="api/admin/uploadImg"
                   listType="picture-card"
                   fileList={fileList}
-                  // onPreview={this.handlePreview}
-                  onChange={this.handleChange}
+                  onPreview={this.handlePreview}
+                  onChange={this.handleChangeImg}
                 >
                   {fileList.length >= 9 ? null : uploadButton}
                   {/* {imgSrc.length < 9 ? <img style={{width: 100, height: 100, display: 'inlien-block'}} src={item} alt=""/> : uploadButton} */}
                 </Upload>
             )}
+            <Modal visible={this.state.previewVisible} footer={null} onCancel={this.handleCancel}>
+              <img alt="example" style={{ width: '100%' }} src={this.state.previewImage} />
+            </Modal>
           </Form.Item>
           <Form.Item
             label='上传详情图'
@@ -367,24 +405,19 @@ class LookProduct extends Component {
                 message: '请上传商品详情图'
               }]
             })(
-             // <div>
-              //   {
-              //     imgSrc.map((item, index) => {
-              //       return 
-                        <Upload
-                        action="api/admin/uploadImg"
-                        listType="picture-card"
-                        fileList={detailFileList}
-                        // onPreview={this.handlePreview}
-                        onChange={this.handleChangeDetail}
-                      >
-                        {detailFileList.length >= 9 ? null : uploadButton}
-                        {/* {imgSrc ? <img style={{width: 100, height: 100, display: 'inlien-block'}} src={imgSrc[0]} alt=""/> : uploadButton} */}
-                      </Upload>
-              //     })
-              //   }
-              // </div>
+              <Upload
+                action="api/admin/uploadImg"
+                listType="picture-card"
+                fileList={detailFileList}
+                onPreview={this.handleDetailPreview}
+                onChange={this.handleChangeDetail}
+              >
+                {detailFileList.length >= 9 ? null : uploadButton}
+              </Upload>
             )}
+            <Modal visible={this.state.previewDetailVisible} footer={null} onCancel={this.handleDetailCancel}>
+              <img alt="example" style={{ width: '100%' }} src={this.state.previewDetailImage} />
+            </Modal>
           </Form.Item>
         </Form>
         <div className='btn'>

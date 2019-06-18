@@ -11,7 +11,8 @@ import  {
  } from '@/services/productApi'
  import '../index.less'
 
- const { TextArea } = Input;
+let timer = null
+
 
 class AddProduct extends Component {
   constructor(props) {
@@ -23,11 +24,18 @@ class AddProduct extends Component {
       fileList: [],
       detailFileList: [],
       productImgPath: '',
-      productDetailPath: ''
+      productDetailPath: '',
+      previewVisible: false,
+      previewImage: '',
+      previewDetailVisible: false,
+      previewDetailImage: '',
     }
   }
   componentWillMount() {
     this.getCategoryData()
+  }
+  componentWillUnmount() {
+    clearInterval(timer)
   }
   // 总品类选择
   getCategoryData() {
@@ -54,9 +62,7 @@ class AddProduct extends Component {
   // 子分类选择
   handleChangeCategoryChild(value) {
     this.setState({
-      categoryChildId: value
-      // categoryChildId: value.split('-')[0],
-      // categoryName: value.split('-')[1]
+      categoryId: value
     })
   }
   //添加商品
@@ -66,13 +72,10 @@ class AddProduct extends Component {
 
       } else {
         const params = {
-          categoryId: this.state.categoryChildId,
-          // categoryName: this.state.categoryName,
-          categoryName: '手机',
+          categoryId: this.state.categoryId,
           name: values.name,
           mainImage: this.state.productImgPath,
           subImages: this.state.productDetailPath,
-          // detailParameters: 
           // desc: values.productDesc,
           stock: values.stock,
           price: values.price,
@@ -81,7 +84,7 @@ class AddProduct extends Component {
         addOrUpdateProduct(params).then(res => {
           if(res.code == 200) {
             message.success(res.msg)
-            setInterval(() => {
+            timer = setInterval(() => {
               this.props.history.push('/productManage')
             }, 1000)
           }
@@ -103,6 +106,7 @@ class AddProduct extends Component {
     reader.readAsDataURL(img);
   }
 
+  // 
   handlePreview = async file => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -114,6 +118,24 @@ class AddProduct extends Component {
     });
   };
 
+  // 
+  handleDetailPreview = async file => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+
+    this.setState({
+      previewDetailImage: file.url || file.preview,
+      previewDetailVisible: true,
+    });
+  };
+
+  // 
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  // 
+  handleDetailCancel = () => this.setState({ previewDetailVisible: false });
+
   handleChange = (info) => {
     let productImgPath = []
     this.state.fileList.map((item, index) => {
@@ -122,15 +144,12 @@ class AddProduct extends Component {
     let imgPath = productImgPath.join(',')
     this.setState({ 
       fileList: info.fileList,
-      // productImgPath: info.file.response.data
     })
     if (info.file.status === 'uploading') {
-      // this.setState({ frontLoading: true });
       return;
     }
     if (info.file.status === 'done') {
       this.setState({
-        // frontLoading: false,
         productImgPath: imgPath
       });
     }
@@ -141,19 +160,18 @@ class AddProduct extends Component {
     this.state.detailFileList.map((item, index) => {
       productDetailPath.push(item.response.data)
     })
-    let imgPath = productDetailPath.join(',')
+    let detailImgPath = productDetailPath.join(',')
+    console.log(2)
+    console.log(detailImgPath)
     this.setState({ 
       detailFileList: info.fileList,
-      // productDetailPath: info.file.response.data
     })
     if (info.file.status === 'uploading') {
-      // this.setState({ frontLoading: true });
       return;
     }
     if (info.file.status === 'done') {
       this.setState({
-        // frontLoading: false,
-        productDetailPath: imgPath
+        productDetailPath: detailImgPath
       });
     }
   }
@@ -311,6 +329,9 @@ class AddProduct extends Component {
                 {fileList.length >= 9 ? null : uploadButton}
               </Upload>
             )}
+            <Modal visible={this.state.previewVisible} footer={null} onCancel={this.handleCancel}>
+              <img alt="example" style={{ width: '100%' }} src={this.state.previewImage} />
+            </Modal>
           </Form.Item>
           <Form.Item
             label='商品详情图'
@@ -326,12 +347,15 @@ class AddProduct extends Component {
                 action="api/admin/uploadImg"
                 listType="picture-card"
                 fileList={detailFileList}
-                // onPreview={this.handlePreview}
+                onPreview={this.handleDetailPreview}
                 onChange={this.handleChangeDetail}
               >
                 {detailFileList.length >= 9 ? null : uploadButton}
               </Upload>
             )}
+            <Modal visible={this.state.previewVisible} footer={null} onCancel={this.handleDetailCancel}>
+              <img alt="example" style={{ width: '100%' }} src={this.state.previewImage} />
+            </Modal>
           </Form.Item>
         </Form>
         <div className='btn'>
